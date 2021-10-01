@@ -6,9 +6,49 @@
     box-sizing: border-box;
 }
 
+ul{
+    list-style: none;
+}
+
 body{
     font-family: 'Source Sans Pro', sans-serif;
     background-color: #f5f0e1;
+}
+
+#todo-heading{
+    margin-top: 5vh;
+}
+
+#todo-container{
+    height: 85%;
+    padding: 20px;
+    padding-left: 50px;
+}
+
+.to-do-obj{
+    display: flex;
+    align-items: center;
+    margin-bottom: 10px;
+}
+
+input[type='checkbox']{
+    float: left;
+    margin-right: 20px;
+}
+
+.to-do-name{
+    font-size: 25px;
+}
+
+#main-view{
+    margin-left: 9vw;
+    margin-right: 9vw;
+    height: 100%;
+}
+
+input [type=checkbox]{
+    float: left;
+    margin-top: 10px;
 }
 
 .project-list{
@@ -42,7 +82,6 @@ body{
 }
 
 #nav-bar{
-    height: 5vh;
     background-color: #1e3d59;
 }
 

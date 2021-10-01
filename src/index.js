@@ -12,13 +12,18 @@ const appLogic = (() => {
 
     function startUp(){
         allProjects.push(currentProject);
-        appLogic.createProject("Today", ["Abc", "Abc", "123"], "a" + uuidv4());
-        appLogic.createProject("Today", [], "a" +  uuidv4());
-        appLogic.createProject("Today", [], "a" + uuidv4());        
+        const Today1 = createProject("Today", [], "a" + uuidv4());
+        const Today2 = createProject("Today", [], "a" +  uuidv4());
+        const Today3 = createProject("Today", [], "a" + uuidv4());        
+        createToDo("test","test",124,"test","test", currentProject)
+        createToDo("test2","test2",124,"test2","test2", Today1)
+        createToDo("test3","test2",124,"test2","test2", Today2)
+        createToDo("test4","test3",124,"test3","test3", Today3)
     }
 
     function createToDo(title, description, dueDate, priority, notes, project){
-        currentProject.addToDo(ToDo(title, description, dueDate, priority, notes, project))
+        const newToDo = ToDo(title, description, dueDate, priority, notes, "b" + uuidv4(), project);
+        project.addToDo(newToDo);
         displayControl.render();
     }
 
@@ -26,6 +31,7 @@ const appLogic = (() => {
         const newProject = Project(name, todos, id);
         allProjects.push(newProject);
         displayControl.render();
+        return newProject;
     }
 
     function getCurrentProject(){

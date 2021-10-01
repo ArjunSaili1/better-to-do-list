@@ -1,4 +1,4 @@
-const ToDo = (title, description, dueDate, priority, notes, project) => {
+const ToDo = (title, description, dueDate, priority, notes, id, project) => {
 
     function getTitle(){return title;}
   
@@ -23,9 +23,11 @@ const ToDo = (title, description, dueDate, priority, notes, project) => {
     function getProject(){return project;}
   
     function setProject(newProject){project = newProject;}
+
+    function getId(){return id}
   
     return{getTitle, getDescription, getDueDate, getPriority, getNotes,
     getProject, setTitle, setDescription, setDueDate, setPriority,
-    setNotes, setProject}
+    setNotes, setProject, getId}
   }
   export { ToDo }
