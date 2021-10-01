@@ -1,0 +1,55 @@
+@import url('https://fonts.googleapis.com/css2?family=Source+Sans+Pro&display=swap');
+*{
+    padding: 0;
+    margin: 0;
+    font-size: 40px;
+    box-sizing: border-box;
+}
+
+body{
+    font-family: 'Source Sans Pro', sans-serif;
+    background-color: #f5f0e1;
+}
+
+.project-list{
+    list-style: none;
+    margin-top: 2vh;
+    font-size: 22px;
+    margin-left: 50px;
+    margin-bottom: 1vh;
+}
+
+#todo-view{
+    height: 95vh;
+    overflow: hidden;
+}
+
+#home-logo{
+    color:#ff6e40;
+    margin-left: 10px;
+}
+
+#to-do-list-container{
+    margin-top: 4vh;
+    list-style: none;
+}
+
+#sidebar{
+    float: left;
+    background-color: rgb(236, 229, 205);
+    width: 300px;
+    height: 95vh;
+}
+
+#nav-bar{
+    height: 5vh;
+    background-color: #1e3d59;
+}
+
+
+#title{
+    font-size: 3vw;
+    font-weight: 600;
+    letter-spacing: 2.5px;
+    padding: 20px;
+}
