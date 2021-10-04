@@ -15,6 +15,9 @@ const appLogic = (() => {
         const Today1 = createProject("Today", [], "a" + uuidv4());
         const Today2 = createProject("Today", [], "a" +  uuidv4());
         const Today3 = createProject("Today", [], "a" + uuidv4());        
+        const Today4 = createProject("Today", [], "a" + uuidv4());        
+        const Today5 = createProject("Today", [], "a" + uuidv4());        
+        const Today6 = createProject("Today", [], "a" + uuidv4());        
         createToDo("test","test",124,"test","test", currentProject)
         createToDo("test2","test2",124,"test2","test2", Today1)
         createToDo("test3","test2",124,"test2","test2", Today2)
