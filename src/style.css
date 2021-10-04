@@ -16,7 +16,31 @@ body{
 }
 
 #todo-heading{
-    margin-top: 5vh;
+    display: inline-block;
+}
+
+#add-to-do{
+    border: none;
+    width: 50px;
+    color: #f5f0e1;
+    background-color: #ff6e40;
+    border-radius: 100%;
+    float: right;
+    box-shadow: 5px 10px 5px -4px rgb(0 0 0 / 20%);
+}
+
+#add-project-container{
+    margin-top: 20px;
+}
+
+#add-project-flex-container{
+    display: flex;
+    justify-content: center;
+}
+
+#add-project-button{
+    font-size: 18px;
+    padding: 10px;
 }
 
 #todo-container{
@@ -29,6 +53,10 @@ body{
     display: flex;
     align-items: center;
     margin-bottom: 10px;
+}
+
+#to-do-title-bar{
+    margin-top: 5vh;
 }
 
 input[type='checkbox']{

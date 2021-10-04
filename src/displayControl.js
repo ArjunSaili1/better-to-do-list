@@ -18,9 +18,6 @@ const displayControl = (() =>{
             if(newProject.id == currentProjectId){
                 newProject.style.fontWeight = 'bold';
                 toDoHeading.textContent = newProject.textContent;
-            }
-            projectList.appendChild(newProject);
-            if(project.getId() == currentProjectId){
                 for(let i = 0; i<project.getToDos().length; i++){
                     const toDoWrapper = document.createElement('div');
                     toDoWrapper.classList.add("to-do-obj");
@@ -35,14 +32,31 @@ const displayControl = (() =>{
                     toDoListHtml.appendChild(toDoWrapper);
                 }
             }
+            projectList.appendChild(newProject);
         }
+        projectList.appendChild(createProjectAddButton());
         bindEvents();
+    }
+
+    function createProjectAddButton(){
+        const container = document.createElement("div");
+        container.id = "add-project-container";
+        const flexContainer = document.createElement("div");
+        flexContainer.id = "add-project-flex-container";
+        const addProjectButton = document.createElement("button");
+        addProjectButton.id="add-project-button";
+        addProjectButton.textContent = "Add Project";
+        container.appendChild(flexContainer)
+        flexContainer.appendChild(addProjectButton);
+        return container;
     }
 
     function bindEvents(){
         for(let i=0; i< appLogic.allProjects.length; i++){
             const project = document.querySelector("#" + appLogic.allProjects[i].getId());
             project.addEventListener("click", switchProject);
+        }
+        for(let i=0; i < toDoListHtml.children; i++){
         }
     }
 

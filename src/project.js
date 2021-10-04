@@ -1,5 +1,3 @@
-import { appLogic } from "./index";
-
 const Project = (name, todos, id) => {
     function getName(){return name;}
   
