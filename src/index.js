@@ -12,16 +12,8 @@ const appLogic = (() => {
 
     function startUp(){
         allProjects.push(currentProject);
-        const Today1 = createProject("Today", [], "a" + uuidv4());
-        const Today2 = createProject("Today", [], "a" +  uuidv4());
-        const Today3 = createProject("Today", [], "a" + uuidv4());        
-        const Today4 = createProject("Today", [], "a" + uuidv4());        
-        const Today5 = createProject("Today", [], "a" + uuidv4());        
-        const Today6 = createProject("Today", [], "a" + uuidv4());        
-        createToDo("test","test",124,"test","test", currentProject)
-        createToDo("test2","test2",124,"test2","test2", Today1)
-        createToDo("test3","test2",124,"test2","test2", Today2)
-        createToDo("test4","test3",124,"test3","test3", Today3)
+        const Today1 = createProject("Today", []);  
+        createToDo("Watch Squid Game with Heli", null, null, null, null, Today1);
     }
 
     function createToDo(title, description, dueDate, priority, notes, project){
@@ -30,8 +22,8 @@ const appLogic = (() => {
         displayControl.render();
     }
 
-    function createProject(name, todos, id){
-        const newProject = Project(name, todos, id);
+    function createProject(name, todos){
+        const newProject = Project(name, todos, "a" + uuidv4());
         allProjects.push(newProject);
         displayControl.render();
         return newProject;

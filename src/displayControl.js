@@ -34,11 +34,11 @@ const displayControl = (() =>{
             }
             projectList.appendChild(newProject);
         }
-        projectList.appendChild(createProjectAddButton());
+        projectList.appendChild(createProjectAddSection());
         bindEvents();
     }
 
-    function createProjectAddButton(){
+    function createProjectAddSection(){
         const container = document.createElement("div");
         container.id = "add-project-container";
         const flexContainer = document.createElement("div");
@@ -46,17 +46,51 @@ const displayControl = (() =>{
         const addProjectButton = document.createElement("button");
         addProjectButton.id="add-project-button";
         addProjectButton.textContent = "Add Project";
-        container.appendChild(flexContainer)
         flexContainer.appendChild(addProjectButton);
+        const addProjectInputContainer = document.createElement('div');
+        addProjectInputContainer.id = "add-project-input-container";
+        const addProjectInput = document.createElement("input");
+        addProjectInput.id = "add-project-input";
+        addProjectInputContainer.appendChild(addProjectInput);
+        const confirmButton = document.createElement("button");
+        confirmButton.classList.add("project-add-confirm-buttons");
+        confirmButton.id = "confirm-project-add";
+        addProjectInputContainer.appendChild(confirmButton);
+        const cancelButton = document.createElement("button");
+        cancelButton.classList.add("project-add-confirm-buttons");
+        cancelButton.id = "cancel-project-add";
+        cancelButton.textContent = "×";
+        confirmButton.textContent = "✓";
+        addProjectInputContainer.appendChild(cancelButton);
+        flexContainer.appendChild(addProjectInputContainer);
+        container.appendChild(flexContainer)
         return container;
     }
 
     function bindEvents(){
-        for(let i=0; i< appLogic.allProjects.length; i++){
+        for(let i=0; i < appLogic.allProjects.length; i++){
             const project = document.querySelector("#" + appLogic.allProjects[i].getId());
             project.addEventListener("click", switchProject);
         }
-        for(let i=0; i < toDoListHtml.children; i++){
+        document.querySelector("#add-project-button").addEventListener("click", displayProjectAdd);
+    }
+
+    function displayProjectAdd(e){
+        document.querySelector("#add-project-input-container").style.display = 'flex';
+        document.querySelector("#cancel-project-add").addEventListener("click", cancelNewProject);
+        document.querySelector("#confirm-project-add").addEventListener("click", generateNewProject);
+    }
+
+    function cancelNewProject(e){
+        document.querySelector("#cancel-project-add").removeEventListener("click", cancelNewProject);
+        document.querySelector("#confirm-project-add").removeEventListener("click", generateNewProject);
+        document.querySelector("#add-project-input-container").style.display = 'none';
+    }
+
+    function generateNewProject(e){
+        const inputValue = e.path[1].childNodes[0].value;
+        if(inputValue){
+            appLogic.createProject(e.path[1].childNodes[0].value, []);
         }
     }
 

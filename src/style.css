@@ -35,12 +35,35 @@ body{
 
 #add-project-flex-container{
     display: flex;
+    align-items: center;
+    flex-direction: column;
+}
+
+#add-project-input-container{
+    display: none;
+    align-items: center;
     justify-content: center;
 }
 
+.project-add-confirm-buttons{
+    height: 40px;
+    padding: 1px;
+    font-size: 26px;
+    margin-left: 10px;
+}
+
 #add-project-button{
+    width: 120px;
     font-size: 18px;
     padding: 10px;
+    margin-bottom: 10px;
+}
+
+#add-project-input{
+    width: 70%;
+    height: 45px;
+    padding: 5px;
+    font-size: 20px;
 }
 
 #todo-container{
