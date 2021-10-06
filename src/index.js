@@ -18,7 +18,15 @@ const appLogic = (() => {
         createToDo("Watch Squid Game with Heli", null, null, null, null, Today1);
         createToDo("Watch Squid Game with Heli", null, null, null, null, Today1);
         createToDo("Watch Squid Game with Heli", null, null, null, null, Today1);
+    }
 
+    function deleteToDoByID(id){
+        for(let i=0;i<currentProject.getToDos().length;i++){
+            if (currentProject.getToDos()[i].getId() == id){
+                currentProject.deleteToDo(currentProject.getToDos()[i]);
+            }
+        }
+        displayControl.render();
     }
 
     function createToDo(title, description, dueDate, priority, notes, project){
@@ -43,7 +51,7 @@ const appLogic = (() => {
         return currentProject;
     }
 
-    return { getCurrentProject, startUp, currentProject, allProjects, createToDo, createProject}
+    return { getCurrentProject, startUp, currentProject, allProjects, createToDo, createProject, deleteToDoByID}
 })();
 
 

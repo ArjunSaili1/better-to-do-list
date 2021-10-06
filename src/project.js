@@ -8,9 +8,15 @@ const Project = (name, todos, id) => {
     function addToDo(newToDo){
       todos.push(newToDo);
     }
+    
+    function deleteToDo(deleteToDo){
+      if(todos.includes(deleteToDo)){
+        todos.splice(todos.indexOf(deleteToDo), 1);
+      }
+    }
   
     function getId(){return id}
   
-    return {getName, getToDos, getId, setName, addToDo};
+    return {getName, getToDos, getId, setName, addToDo, deleteToDo};
   }
   export { Project }

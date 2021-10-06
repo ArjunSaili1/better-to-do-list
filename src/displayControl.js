@@ -31,6 +31,7 @@ const displayControl = (() =>{
                     toDoObj.id = project.getToDos()[i].getId();
                     toDoWrapper.appendChild(checkbox);
                     toDoWrapper.appendChild(toDoObj);
+                    toDoWrapper.appendChild(createIcons());
                     toDoListHtml.appendChild(toDoWrapper);
                 }
             }
@@ -38,6 +39,41 @@ const displayControl = (() =>{
         }
         projectList.appendChild(createProjectAddSection());
         bindEvents();
+    }
+
+    function createIcons(){
+        const icons = ['input', 'edit', 'delete'];
+        const iconsWrapper = document.createElement('div');
+        iconsWrapper.id = 'icons-wrapper';
+        iconsWrapper.classList.add('to-do-actions');
+        for(let i=0;i<icons.length;i++){
+            const newIcon = document.createElement('span');
+            newIcon.classList.add("material-icons");
+            newIcon.textContent = icons[i];
+            newIcon.classList.add('icon');
+            iconsWrapper.appendChild(newIcon);
+        }
+        iconsWrapper.children[2].id = "delete-to-do";
+        iconsWrapper.children[2].addEventListener("click", deleteToDo);
+        iconsWrapper.children[1].id = "edit-to-do";
+        iconsWrapper.children[0].id = "change-project";        
+        return iconsWrapper;
+    }
+
+    function deleteToDo(e){
+        const children = e.target.parentNode.parentNode.childNodes;
+        for(let i=0;i<children.length;i++){
+            if(children[i].classList.contains("to-do-name")){
+                appLogic.deleteToDoByID(children[i].id);
+            }
+        }
+
+        // for(let i=0;i<=e.path.length;i++){
+        //     if(e.path[i].classList.contains("to-do-obj")){
+        //         console.log(e.path[i]);
+        //         break;
+        //     }
+        // }
     }
 
     function createProjectAddSection(){

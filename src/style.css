@@ -90,21 +90,24 @@ body{
     padding-left: 50px;
 }
 
+.to-do-actions{
+    margin-left:auto;
+    color: #ff6e40;
+}
+
+.icon{
+    font-size: 20px;
+    padding-left: 10px;
+    cursor: pointer;
+}
+
 .to-do-obj{
     display: flex;
     align-items: center;
-    padding-bottom: 6px;
-    border-bottom: 1px solid #e3d5ac;
+    border-bottom: 1px solid #ddcc9a;
     margin-bottom: 28px;
 }
 
-#modal-flex{
-    display:flex;
-    background-color: rgba(0, 0, 0, .2);
-    justify-content: center;
-    align-items: center;
-    height: 100%;
-}
 
 .close-modal{
     float:right;
