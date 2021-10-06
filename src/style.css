@@ -17,6 +17,7 @@ body{
 
 #todo-heading{
     display: inline-block;
+    font-weight: bold;
 }
 
 #add-to-do{
@@ -52,6 +53,21 @@ body{
     margin-left: 10px;
 }
 
+
+
+.modal-content{
+    background-color: #f4f4f4;
+    margin: 20% auto;
+    width: 70%;
+    box-shadow: 2px 5px 15px 8px rgba(0,0,0,0.24);
+}
+
+.close-modal:focus, .close-modal:hover{
+    color: #ff6e40;
+    text-decoration: none;
+    cursor: pointer;
+}
+
 #add-project-button{
     width: 120px;
     font-size: 18px;
@@ -64,6 +80,8 @@ body{
     height: 45px;
     padding: 5px;
     font-size: 20px;
+    outline: none;
+    border-radius: none;
 }
 
 #todo-container{
@@ -75,7 +93,114 @@ body{
 .to-do-obj{
     display: flex;
     align-items: center;
-    margin-bottom: 10px;
+    padding-bottom: 6px;
+    border-bottom: 1px solid #1e3d59;
+    margin-bottom: 28px;
+}
+
+#modal-flex{
+    display:flex;
+    background-color: rgba(0, 0, 0, .2);
+    justify-content: center;
+    align-items: center;
+    height: 100%;
+}
+
+.close-modal{
+    float:right;
+}
+
+.modal-view{
+    /* display: flex; */
+    display: none;
+    position: absolute;
+    top: 0;
+    width: 100vw;
+    align-items: center;
+    justify-content: center;
+    height: 100vh;
+    padding: 10px;
+    background-color: rgba(0,0,0,0.24);
+}
+
+.modal-title{
+    width: 90%;
+    font-size: 50px;
+    font-weight: bold;
+    position: relative;
+}
+
+.to-do-details{
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+}
+
+.input-box{
+    width: calc(100% / 2 - 20px);
+    margin-bottom: 15px;
+}
+
+.to-do-input{
+    font-family: 'Source Sans Pro', sans-serif;
+    height: 45px;
+    width: 100%;
+    font-size: 30px;
+    outline: none;
+    border-radius: 5px;
+    border: 1px solid #ccc;
+    padding-left: 15px;
+    font-size: 20px;
+    border-bottom-width: 2px;
+    transition: all 0.3s ease;
+}
+
+.to-do-input:focus{
+    border-color: #ff6e40;
+}
+
+#submit-create-to-do{
+    background-color: #ff6e40;
+    color: white;
+    width: 160px;
+    margin: 30px 30px 18px 0px;
+    padding-right: 15px;
+}
+
+textarea{
+    resize: vertical;
+    padding-top: 2%;
+}
+
+.details{
+    font-weight: 500;
+    margin-bottom: 5px;
+    display: block;
+    margin: 20px 0px 12px 0px;
+    font-size: 30px;
+}
+
+.modal-title::before{
+    content: '';
+    position:absolute;
+    height: 3px;
+    width: 30px;
+    left: 0; 
+    bottom: 0;
+    background-color: #ff6e40;
+}
+
+.modal-container{
+    display: inherit;
+}
+
+.modal{
+    background-color: #fff;
+    max-width: 1200px;
+    width: 100%;
+    padding: 40px 30px;
+    border-radius: 5px;
+    box-shadow: 0 3px 7px rgba(0, 0, 0, 0.3);
 }
 
 #to-do-title-bar{
@@ -88,7 +213,11 @@ input[type='checkbox']{
 }
 
 .to-do-name{
-    font-size: 25px;
+    font-size: 21px;
+}
+
+#content{
+    position: absolute;
 }
 
 #main-view{
@@ -111,8 +240,17 @@ input [type=checkbox]{
 }
 
 #todo-view{
-    height: 95vh;
+    height: 94vh;
     overflow: hidden;
+}
+
+.modal-header{
+    padding: 15px;
+    background-color: #ff6e40;
+}
+
+.modal-body{
+    padding: 10px 20px 10px 20px;
 }
 
 #home-logo{
@@ -129,10 +267,19 @@ input [type=checkbox]{
     float: left;
     background-color: rgb(236, 229, 205);
     width: 300px;
-    height: 95vh;
+    height: 94vh;
+}
+
+#modal{
+    height: 500px;
+    width: 300px;
 }
 
 #nav-bar{
+    min-height: 50px;
+    height: 6vh;
+    display: flex;
+    align-items: center;
     background-color: #1e3d59;
 }
 

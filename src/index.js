@@ -4,7 +4,6 @@ import { displayControl } from "./displayControl";
 import { v4 as uuidv4 } from 'uuid';
 import './style.css';
 
-
 const appLogic = (() => {
 
     const allProjects = [];
@@ -14,6 +13,12 @@ const appLogic = (() => {
         allProjects.push(currentProject);
         const Today1 = createProject("Today", []);  
         createToDo("Watch Squid Game with Heli", null, null, null, null, Today1);
+        createToDo("Watch Squid Game with Heli", null, null, null, null, Today1);
+        createToDo("Watch Squid Game with Heli", null, null, null, null, Today1);
+        createToDo("Watch Squid Game with Heli", null, null, null, null, Today1);
+        createToDo("Watch Squid Game with Heli", null, null, null, null, Today1);
+        createToDo("Watch Squid Game with Heli", null, null, null, null, Today1);
+
     }
 
     function createToDo(title, description, dueDate, priority, notes, project){

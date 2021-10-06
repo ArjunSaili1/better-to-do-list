@@ -21,6 +21,8 @@ const displayControl = (() =>{
                 for(let i = 0; i<project.getToDos().length; i++){
                     const toDoWrapper = document.createElement('div');
                     toDoWrapper.classList.add("to-do-obj");
+                    const toDoMain = document.createElement("div");
+                    toDoMain.id = 'to-do-wrapper';
                     const checkbox = document.createElement('input');
                     checkbox.type = "checkbox";
                     const toDoObj = document.createElement("li");
@@ -73,6 +75,59 @@ const displayControl = (() =>{
             project.addEventListener("click", switchProject);
         }
         document.querySelector("#add-project-button").addEventListener("click", displayProjectAdd);
+        document.querySelector("#add-to-do").addEventListener("click", displayModal);
+    }
+
+    function displayModal(e){
+        const displayModal = document.querySelector(".modal-view")
+        displayModal.style.display = 'flex';
+        document.querySelector(".close-modal").addEventListener("click", closeModal);
+        populateProjectDropdown()
+        document.querySelector("#submit-create-to-do").addEventListener("click", makeToDo);
+    }
+
+    function populateProjectDropdown(){
+        const dropdown = document.querySelector("#project-list-create-to-do")
+        dropdown.innerHTML = '';
+        for(let i =0; i< appLogic.allProjects.length; i++){
+            const newOption = document.createElement("option");
+            newOption.classList.add("to-do-input");
+            newOption.value = appLogic.allProjects[i].getId();
+            newOption.textContent = appLogic.allProjects[i].getName();
+            dropdown.appendChild(newOption);
+        }
+    }
+
+    function makeToDo(e){
+        e.preventDefault();
+        const title = document.querySelector("#to-do-title").value;
+        console.log(title)
+        const description = document.querySelector("#to-do-description").value;
+        console.log(description)
+        const dueDate = document.querySelector("#to-do-due-date").value;
+        const priority = document.querySelector("#priority").value;
+        console.log(priority)
+        const project = document.querySelector("#project-list-create-to-do").value;
+        console.log(project)
+        const notes = document.querySelector("#to-do-notes").value;
+        console.log(notes)
+        appLogic.createToDo(title, description, dueDate, priority, notes, getProjectFromId(project));
+        document.querySelector(".close-modal").click();
+    }
+
+    function getProjectFromId(id){
+        for(let i=0;i<appLogic.allProjects.length;i++){
+            if(appLogic.allProjects[i].getId()== id){
+                return appLogic.allProjects[i];
+            }
+        }
+    }
+
+    function closeModal(e){
+        console.log("click")
+        const displayModal = document.querySelector(".modal-view")
+        displayModal.style.display = "none";
+        document.querySelector(".close-modal").removeEventListener("click", closeModal);
     }
 
     function displayProjectAdd(e){

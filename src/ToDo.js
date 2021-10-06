@@ -16,7 +16,7 @@ const ToDo = (title, description, dueDate, priority, notes, id, project) => {
   
     function setPriority(newPriority){priority = newPriority;}
   
-    function getNotes(){return notes;}
+    function getNotes(){if(notes){return notes;};}
   
     function setNotes(newNotes){notes = newNotes;}
   

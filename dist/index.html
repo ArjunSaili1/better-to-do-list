@@ -9,25 +9,68 @@
       rel="stylesheet">
 </head>
 <body>
-    <div id='nav-bar'>
-        <span class="material-icons" id='home-logo'>
-            home
-            </span>
-    </div>
-    <div id='sidebar'>
-        <ul id="project-list">
-        </ul>
-    </div>
-    <div id='todo-view'>
-        <div id="main-view">
-            <div id='to-do-title-bar'>
-                <div id="todo-heading">Inbox</div>
-                <button id='add-to-do'>+</button>
+    <div id='main'>
+        <div id='nav-bar'>
+            <span class="material-icons" id='home-logo'>
+                home
+                </span>
+        </div>
+        <div id='sidebar'>
+            <ul id="project-list">
+            </ul>
+        </div>
+        <div id='todo-view'>
+            <div id="main-view">
+                <div id='to-do-title-bar'>
+                    <div id="todo-heading">Inbox</div>
+                    <button id='add-to-do'>+</button>
+                </div>
+                <div id="todo-container">
+                    <ul id='to-do-list'>
+                    </ul>  
+                </div>
             </div>
-            <div id="todo-container">
-                <ul id='to-do-list'>
-                </ul>  
-            </div>
+        </div>
+    </div>
+    <div class="modal-view">
+        <div class="modal">
+            <div class="close-modal">&times</div>
+            <div class="modal-title">Create A New To Do</div>
+            <form id="create-to-do-form" action="#">
+                <div class="to-do-details">
+                    <div class="input-box">
+                        <span class="details">To Do Name</span>
+                        <input class='to-do-input' type="text" id="to-do-title" placeholder="Get Groceries.." required>
+                    </div>
+                    <div class="input-box">
+                        <span class="details">Description</span>
+                        <textarea class='to-do-input' name="description" id="to-do-description" required></textarea>
+                    </div>
+                    <div class="input-box">
+                        <span class="details">Due Date</span>
+                        <input class='to-do-input' type="datetime-local" id="to-do-due-date" required>
+                    </div>
+                    <div class="input-box">
+                        <span class="details">Priority</span>
+                        <select class='to-do-input' name="priority" id="priority" required>
+                            <option class='to-do-input' value="low">Low</option>
+                            <option class='to-do-input' value="medium">Medium</option>
+                            <option class='to-do-input' value="high">High</option>
+                        </select>
+                    </div>
+                    <div class="input-box">
+                        <span class="details">Project</span>
+                        <select class='to-do-input' name="priority" id="project-list-create-to-do" required></select>
+                    </div>
+                    <div class="input-box">
+                        <span class="details">Notes</span>
+                        <textarea class='to-do-input' name="notes" id="to-do-notes"></textarea>
+                    </div>
+                </div>
+                <div class="submit-button">
+                    <input class='to-do-input' id="submit-create-to-do" type="submit" value="Create To Do">
+                </div>
+            </form>
         </div>
     </div>
     <script src="main.js"></script>
