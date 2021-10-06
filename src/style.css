@@ -94,7 +94,7 @@ body{
     display: flex;
     align-items: center;
     padding-bottom: 6px;
-    border-bottom: 1px solid #1e3d59;
+    border-bottom: 1px solid #e3d5ac;
     margin-bottom: 28px;
 }
 
@@ -213,7 +213,7 @@ input[type='checkbox']{
 }
 
 .to-do-name{
-    font-size: 21px;
+    font-size: 19px;
 }
 
 #content{
