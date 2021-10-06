@@ -29,8 +29,14 @@ const displayControl = (() =>{
                     toDoObj.classList.add("to-do-name");
                     toDoObj.textContent = project.getToDos()[i].getTitle();
                     toDoObj.id = project.getToDos()[i].getId();
+
+                    const toDoTime = document.createElement("div");
+                    toDoTime.id = "to-do-time"
+                    toDoTime.textContent = project.getToDos()[i].getDueDate();
+
                     toDoWrapper.appendChild(checkbox);
                     toDoWrapper.appendChild(toDoObj);
+                    toDoWrapper.appendChild(toDoTime);
                     toDoWrapper.appendChild(createIcons());
                     toDoListHtml.appendChild(toDoWrapper);
                 }
@@ -43,6 +49,8 @@ const displayControl = (() =>{
 
     function createIcons(){
         const icons = ['input', 'edit', 'delete'];
+        const iconsContainer = document.createElement('div');
+        iconsContainer.id = 'icons-container';
         const iconsWrapper = document.createElement('div');
         iconsWrapper.id = 'icons-wrapper';
         iconsWrapper.classList.add('to-do-actions');
@@ -56,24 +64,19 @@ const displayControl = (() =>{
         iconsWrapper.children[2].id = "delete-to-do";
         iconsWrapper.children[2].addEventListener("click", deleteToDo);
         iconsWrapper.children[1].id = "edit-to-do";
-        iconsWrapper.children[0].id = "change-project";        
-        return iconsWrapper;
+        // iconsWrapper.children[1].addEventListener("click", displayEditModal);
+        iconsWrapper.children[0].id = "change-project";    
+        iconsContainer.appendChild(iconsWrapper);    
+        return iconsContainer;
     }
 
     function deleteToDo(e){
-        const children = e.target.parentNode.parentNode.childNodes;
+        const children = e.target.parentNode.parentNode.parentNode.childNodes;
         for(let i=0;i<children.length;i++){
             if(children[i].classList.contains("to-do-name")){
                 appLogic.deleteToDoByID(children[i].id);
             }
         }
-
-        // for(let i=0;i<=e.path.length;i++){
-        //     if(e.path[i].classList.contains("to-do-obj")){
-        //         console.log(e.path[i]);
-        //         break;
-        //     }
-        // }
     }
 
     function createProjectAddSection(){

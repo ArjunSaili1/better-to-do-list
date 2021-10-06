@@ -101,6 +101,14 @@ body{
     cursor: pointer;
 }
 
+#icons-wrapper{
+    margin-bottom: 10px;
+    height: auto;
+    padding-top: 0px;
+    margin-left: auto;
+    color: #ff6e40;
+}
+
 .to-do-obj{
     display: flex;
     align-items: center;
@@ -197,11 +205,17 @@ textarea{
     display: inherit;
 }
 
+#to-do-time{
+    color: grey;
+    margin-left: auto;
+    font-size: 18px;
+}
+
 .modal{
     background-color: #fff;
     max-width: 1200px;
     width: 100%;
-    padding: 40px 30px;
+    padding: 20px 30px;
     border-radius: 5px;
     box-shadow: 0 3px 7px rgba(0, 0, 0, 0.3);
 }
