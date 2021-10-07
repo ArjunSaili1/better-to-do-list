@@ -6,6 +6,47 @@
     box-sizing: border-box;
 }
 
+@media only screen and (max-width: 1000px){
+    #sidebar{
+        position:absolute;
+        z-index: 10;
+    }
+    #todo-view{
+        width: 100vw;
+    }
+    #open-menu{
+        display: inherit !important;
+    }
+    .menu-screen-overlay{
+        display: none;
+        top: 5vh;
+        position:absolute;
+        width: 100vw;
+        height: 95vh;
+        background-color: rgba(0, 0, 0, 0.3);
+    }
+
+}
+
+#sidebar-heading-container{
+    margin: 25px;
+}
+
+#sidebar-heading{
+    text-align: center;
+    background-color: #1e3d59;
+    border-radius: 9px;
+    color: #f5f0e1;
+    font-weight: bold;
+    font-size: 25px;
+    padding: 15px;
+    margin-bottom: 10px;
+}
+
+.open-menu{
+    display: initial;
+}
+
 ul{
     list-style: none;
 }
@@ -31,24 +72,30 @@ body{
 }
 
 #add-project-container{
-    margin-top: 20px;
+    margin-left: 25px;
+    margin-top: 2.5vh;
 }
 
-#add-project-flex-container{
+#add-project-wrapper{
     display: flex;
     align-items: center;
-    flex-direction: column;
+}
+
+#add-project-icon{
+    margin-right: 5px;
+    font-size: 21px;
 }
 
 #add-project-input-container{
     display: none;
     align-items: center;
     justify-content: center;
+    height: 36px;
+    margin: 20px;
 }
 
 .project-add-confirm-buttons{
-    height: 40px;
-    padding: 1px;
+    padding: 2px;
     font-size: 26px;
     margin-left: 10px;
 }
@@ -70,18 +117,14 @@ body{
 
 #add-project-button{
     width: 120px;
-    font-size: 18px;
-    padding: 10px;
-    margin-bottom: 10px;
+    font-size: 19px;
 }
 
 #add-project-input{
     width: 70%;
-    height: 45px;
     padding: 5px;
     font-size: 20px;
     outline: none;
-    border-radius: none;
 }
 
 #todo-container{
@@ -298,9 +341,13 @@ input [type=checkbox]{
     padding: 10px 20px 10px 20px;
 }
 
-#home-logo{
+.top-logo{
     color:#ff6e40;
     margin-left: 10px;
+}
+
+#open-menu{
+    display: none;
 }
 
 #to-do-list-container{
@@ -311,8 +358,9 @@ input [type=checkbox]{
 #sidebar{
     float: left;
     background-color: rgb(236, 229, 205);
-    width: 300px;
-    height: 94vh;
+    width: 350px;
+    height: 95vh;
+    border-right: 1px solid #1e3d59;
 }
 
 #modal{
@@ -321,8 +369,7 @@ input [type=checkbox]{
 }
 
 #nav-bar{
-    min-height: 50px;
-    height: 6vh;
+    min-height: 5vh;
     display: flex;
     align-items: center;
     background-color: #1e3d59;

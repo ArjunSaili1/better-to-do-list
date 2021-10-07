@@ -136,12 +136,18 @@ const displayControl = (() =>{
     function createProjectAddSection(){
         const container = document.createElement("div");
         container.id = "add-project-container";
-        const flexContainer = document.createElement("div");
-        flexContainer.id = "add-project-flex-container";
-        const addProjectButton = document.createElement("button");
+        const addProjectWrapper = document.createElement("div");
+        addProjectWrapper.id = "add-project-wrapper";
+        const addIcon = document.createElement('span');
+        addIcon.classList.add("material-icons");
+        addIcon.id = "add-project-icon";
+        addIcon.textContent = "add_circle_outline";
+        const addProjectButton = document.createElement("div");
         addProjectButton.id="add-project-button";
         addProjectButton.textContent = "Add Project";
-        flexContainer.appendChild(addProjectButton);
+        addProjectWrapper.appendChild(addIcon);
+        addProjectWrapper.appendChild(addProjectButton);
+        container.appendChild(addProjectWrapper);
         const addProjectInputContainer = document.createElement('div');
         addProjectInputContainer.id = "add-project-input-container";
         const addProjectInput = document.createElement("input");
@@ -157,8 +163,7 @@ const displayControl = (() =>{
         cancelButton.textContent = "×";
         confirmButton.textContent = "✓";
         addProjectInputContainer.appendChild(cancelButton);
-        flexContainer.appendChild(addProjectInputContainer);
-        container.appendChild(flexContainer)
+        container.appendChild(addProjectInputContainer);
         return container;
     }
 
@@ -167,8 +172,15 @@ const displayControl = (() =>{
             const project = document.querySelector("#" + appLogic.allProjects[i].getId());
             project.addEventListener("click", switchProject);
         }
-        document.querySelector("#add-project-button").addEventListener("click", displayProjectAdd);
+        document.querySelector("#open-menu").addEventListener("click", openSideMenu)
+        document.querySelector("#add-project-wrapper").addEventListener("click", displayProjectAdd);
         document.querySelector("#add-to-do").addEventListener("click", displayCreateModal);
+    }
+
+    function openSideMenu(e){
+        const overlay = document.querySelector(".menu-screen-overlay");
+        overlay.classList.toggle("open-menu");
+        overlay.addEventListener("click", ()=>{overlay.classList.remove("open-menu");})
     }
 
     function displayCreateModal(e){
@@ -252,8 +264,6 @@ const displayControl = (() =>{
         }
     }
 
-    function setPriorityColor(){}
-
     function editToDo(e, selectedToDo){
         e.preventDefault();
         appLogic.deleteToDoByID(selectedToDo.getId());
@@ -275,7 +285,6 @@ const displayControl = (() =>{
                 projectId = projectSelects[i].getAttribute('projectId')
             }
         }
-        // const project = document.querySelector("#project-list-create-to-do").getAttribute('id');
         const notes = document.querySelector("#to-do-notes").value;
         appLogic.createToDo(title, description, dueDate, priority, notes, getProjectFromId(projectId));
 
