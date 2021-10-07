@@ -29,12 +29,9 @@ const displayControl = (() =>{
                     toDoObj.classList.add("to-do-name");
                     toDoObj.textContent = project.getToDos()[i].getTitle();
                     toDoObj.id = project.getToDos()[i].getId();
-
                     const toDoTime = document.createElement("div");
                     toDoTime.id = "to-do-time";
-                    console.log(project.getToDos()[i].getPriority());
                     if(project.getToDos()[i].getPriority() == 'high'){
-                        console.log('abc')
                         toDoWrapper.style.backgroundColor = '#ff6e40'
                     }
                     if(project.getToDos()[i].getPriority() == 'medium'){
@@ -51,12 +48,18 @@ const displayControl = (() =>{
                     toDoWrapper.appendChild(toDoTime);
                     toDoWrapper.appendChild(createIcons());
                     toDoListHtml.appendChild(toDoWrapper);
+                    checkbox.addEventListener("click",compeleteTask)
                 }
             }
             projectList.appendChild(newProject);
         }
         projectList.appendChild(createProjectAddSection());
         bindEvents();
+    }
+
+    function compeleteTask(e){
+        setTimeout(()=>{appLogic.deleteToDoByID((locateToDo(e.target.parentNode.children)).getId())}, 100);
+        //do some animation
     }
 
     function createIcons(){
@@ -82,12 +85,7 @@ const displayControl = (() =>{
     }
 
     function deleteToDo(e){
-        const children = e.target.parentNode.parentNode.parentNode.childNodes;
-        for(let i=0;i<children.length;i++){
-            if(children[i].classList.contains("to-do-name")){
-                appLogic.deleteToDoByID(children[i].id);
-            }
-        }
+        appLogic.deleteToDoByID(locateToDo(e.target.parentNode.parentNode.parentNode.children).getId());
     }
 
     function createProjectAddSection(){
@@ -147,7 +145,7 @@ const displayControl = (() =>{
     }
 
     function displayEditModal(e){
-        const selectedToDo = locateToDo(e.target);
+        const selectedToDo = locateToDo(e.target.parentNode.parentNode.parentNode.children);
         document.querySelector("#to-do-title").value = selectedToDo.getTitle();
         document.querySelector("#to-do-description").value = selectedToDo.getDescription();
         document.querySelector("#to-do-due-date").value = selectedToDo.getDueDate();
@@ -167,12 +165,11 @@ const displayControl = (() =>{
         addClickEditHandler(selectedToDo)
     }
 
-    function locateToDo(iconElement){
-        const children = iconElement.parentNode.parentNode.parentNode.children;
-        for(let i=0; i<= children.length; i++){
-            if(children[i]){
-                if(children[i].tagName == 'LI'){
-                    return appLogic.getToDoByID(children[i].id);
+    function locateToDo(todoobj){
+        for(let i=0; i<= todoobj.length; i++){
+            if(todoobj[i]){
+                if(todoobj[i].tagName == 'LI'){
+                    return appLogic.getToDoByID(todoobj[i].id);
                 }
             }
         }
