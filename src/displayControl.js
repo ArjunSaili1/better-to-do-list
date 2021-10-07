@@ -19,6 +19,7 @@ const displayControl = (() =>{
                 newProject.style.fontWeight = 'bold';
                 toDoHeading.textContent = newProject.textContent;
                 for(let i = 0; i<project.getToDos().length; i++){
+                    const largeToDoWrapper = document.createElement('div');
                     const toDoWrapper = document.createElement('div');
                     toDoWrapper.classList.add("to-do-obj");
                     const toDoMain = document.createElement("div");
@@ -47,7 +48,11 @@ const displayControl = (() =>{
                     toDoWrapper.appendChild(toDoObj);
                     toDoWrapper.appendChild(toDoTime);
                     toDoWrapper.appendChild(createIcons());
-                    toDoListHtml.appendChild(toDoWrapper);
+                    largeToDoWrapper.appendChild(toDoWrapper);
+                    toDoListHtml.appendChild(largeToDoWrapper);
+                    const descriptionSection = createDescriptionNotesSection(project.getToDos()[i].getDescription(), project.getToDos()[i].getNotes());
+                    descriptionSection.id = project.getToDos()[i].getId();
+                    toDoListHtml.appendChild(descriptionSection)
                     checkbox.addEventListener("click",compeleteTask)
                 }
             }
@@ -57,13 +62,41 @@ const displayControl = (() =>{
         bindEvents();
     }
 
+    function createDescriptionNotesSection(descriptionTxt, noteTxt){
+        const descriptionWrapper = document.createElement('div');
+        descriptionWrapper.classList.add("description-note-wrapper");
+        const descriptionHeading = document.createElement('div');
+        descriptionHeading.classList.add("description-note-heading");
+        descriptionHeading.textContent = "Description";
+        const descriptionTextContainer = document.createElement('div');
+        descriptionTextContainer.classList.add("description-note-text-container");
+        const descriptionText = document.createElement('div');
+        descriptionText.classList.add("description-note-text");
+        descriptionText.textContent = descriptionTxt;
+        descriptionTextContainer.appendChild(descriptionText);
+        const noteHeading = document.createElement("div");
+        noteHeading.classList.add("description-note-heading");
+        noteHeading.textContent = "Notes";
+        const noteTextContainer = document.createElement('div');
+        noteTextContainer.classList.add("description-note-text-container");
+        const noteText = document.createElement('div');
+        noteText.classList.add("description-note-text");
+        noteText.textContent = noteTxt;
+        noteTextContainer.appendChild(noteText);
+        descriptionWrapper.appendChild(descriptionHeading);
+        descriptionWrapper.appendChild(descriptionTextContainer);
+        descriptionWrapper.appendChild(noteHeading);
+        descriptionWrapper.appendChild(noteTextContainer);
+        return descriptionWrapper;
+    }
+
     function compeleteTask(e){
         setTimeout(()=>{appLogic.deleteToDoByID((locateToDo(e.target.parentNode.children)).getId())}, 100);
         //do some animation
     }
 
     function createIcons(){
-        const icons = ['edit', 'delete'];
+        const icons = ['edit', 'delete', 'keyboard_arrow_down'];
         const iconsContainer = document.createElement('div');
         iconsContainer.id = 'icons-container';
         const iconsWrapper = document.createElement('div');
@@ -76,12 +109,24 @@ const displayControl = (() =>{
             newIcon.classList.add('icon');
             iconsWrapper.appendChild(newIcon);
         }
+        iconsWrapper.children[2].id = 'open-description-dropdown';
+        iconsWrapper.children[2].addEventListener("click", openDescriptionDropdown);
         iconsWrapper.children[1].id = "delete-to-do";
         iconsWrapper.children[1].addEventListener("click", deleteToDo);
         iconsWrapper.children[0].id = "edit-to-do";
         iconsWrapper.children[0].addEventListener("click", displayEditModal);
         iconsContainer.appendChild(iconsWrapper);    
         return iconsContainer;
+    }
+
+    function openDescriptionDropdown(e){
+        e.target.parentNode.parentNode.parentNode.parentNode.nextSibling.classList.toggle("show-display");
+        if(e.target.textContent == "keyboard_arrow_down"){
+            e.target.textContent = "keyboard_arrow_up";
+        }
+        else{
+            e.target.textContent = "keyboard_arrow_down";
+        }
     }
 
     function deleteToDo(e){

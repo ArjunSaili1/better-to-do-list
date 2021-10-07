@@ -86,8 +86,7 @@ body{
 
 #todo-container{
     height: 85%;
-    padding: 20px;
-    padding-left: 50px;
+    padding: 0px 20px 50px 50px;
 }
 
 .to-do-actions{
@@ -99,6 +98,35 @@ body{
     font-size: 20px;
     padding-left: 10px;
     cursor: pointer;
+}
+
+.description-note-wrapper{
+    display: none;
+    padding: 20px 30px 20px 30px;
+    width: 100%;
+    background-color: rgb(236, 229, 205);
+    border-radius: 10px;
+}
+
+.description-note-heading{
+    font-size: 22px;
+    font-weight: bold;
+}
+
+.description-note-text-container{
+    display: flex;
+    background-color: white;
+    padding: 15px;
+    border-radius: 10px;
+    margin: 10px;
+}
+
+.description-note-text{
+    font-size: 17px;
+}
+
+.show-display{
+    display: inherit;
 }
 
 #icons-wrapper{
@@ -113,11 +141,10 @@ body{
     display: flex;
     align-items: center;
     border-bottom: 1px solid #ddcc9a;
-    margin-bottom: 28px;
+    margin: 28px 0px 10px 0px;
     padding: 0px 10px 0px 10px;
     border-radius: 10px;
 }
-
 
 .close-modal{
     float:right;
@@ -259,7 +286,6 @@ input [type=checkbox]{
 }
 
 #todo-view{
-    height: 94vh;
     overflow: hidden;
 }
 
