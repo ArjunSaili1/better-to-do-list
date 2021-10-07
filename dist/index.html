@@ -35,8 +35,8 @@
     <div class="modal-view">
         <div class="modal">
             <div class="close-modal">&times</div>
-            <div class="modal-title">Create A New To Do</div>
-            <form id="create-to-do-form" action="#">
+            <div class="modal-title"></div>
+            <form id="modal-form" class="modal-form" action="#">
                 <div class="to-do-details">
                     <div class="input-box">
                         <span class="details">To Do Name</span>
@@ -53,14 +53,14 @@
                     <div class="input-box">
                         <span class="details">Priority</span>
                         <select class='to-do-input' name="priority" id="priority" required>
-                            <option class='to-do-input' value="low">Low</option>
-                            <option class='to-do-input' value="medium">Medium</option>
-                            <option class='to-do-input' value="high">High</option>
+                            <option value="low">Low</option>
+                            <option value="medium">Medium</option>
+                            <option value="high">High</option>
                         </select>
                     </div>
                     <div class="input-box">
                         <span class="details">Project</span>
-                        <select class='to-do-input' name="priority" id="project-list-create-to-do" required></select>
+                        <select class='to-do-input' name="projects" id="project-list-create-to-do" required></select>
                     </div>
                     <div class="input-box">
                         <span class="details">Notes</span>
@@ -68,7 +68,7 @@
                     </div>
                 </div>
                 <div class="submit-button">
-                    <input class='to-do-input' id="submit-create-to-do" type="submit" value="Create To Do">
+                    <input class='to-do-input' id="submit-to-do-modal" type="submit" value="">
                 </div>
             </form>
         </div>

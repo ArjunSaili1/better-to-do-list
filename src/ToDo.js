@@ -8,7 +8,7 @@ const ToDo = (title, description, dueDate, priority, notes, id, project) => {
   
     function setDescription(newDescription){description = newDescription;}
   
-    function getDueDate(){return dueDate.replace('T', ' ');}
+    function getDueDate(){if(dueDate){return dueDate};}
   
     function setDueDate(newDueDate){dueDate = newDueDate;}
   

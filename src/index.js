@@ -20,12 +20,27 @@ const appLogic = (() => {
         createToDo("Watch Squid Game with Heli", null, null, null, null, Today1);
     }
 
-    function deleteToDoByID(id){
+    function getToDoByID(id){
         for(let i=0;i<currentProject.getToDos().length;i++){
             if (currentProject.getToDos()[i].getId() == id){
-                currentProject.deleteToDo(currentProject.getToDos()[i]);
+                    return (currentProject.getToDos()[i]);
             }
         }
+    }
+
+    function editToDo(todo, newTitle, newDescription, newDueDate, newPriority, newNotes, newProject){
+        todo.setTitle(newTitle);
+        todo.setDescription(newDescription);
+        todo.setDueDate(newDueDate);
+        todo.setPriority(newPriority);
+        todo.setNotes(newNotes);
+        todo.setProject(newProject);
+        currentProject.deleteToDo(todo);
+        render();
+    }
+
+    function deleteToDoByID(id){
+        currentProject.deleteToDo(getToDoByID(id));
         displayControl.render();
     }
 
@@ -51,7 +66,7 @@ const appLogic = (() => {
         return currentProject;
     }
 
-    return { getCurrentProject, startUp, currentProject, allProjects, createToDo, createProject, deleteToDoByID}
+    return { getCurrentProject, startUp, currentProject, allProjects, createToDo, createProject, deleteToDoByID, getToDoByID, editToDo}
 })();
 
 

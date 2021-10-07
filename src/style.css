@@ -113,7 +113,7 @@ body{
     display: flex;
     align-items: center;
     border-bottom: 1px solid #ddcc9a;
-    margin-bottom: 5px;
+    margin-bottom: 28px;
 }
 
 
@@ -170,7 +170,7 @@ body{
     border-color: #ff6e40;
 }
 
-#submit-create-to-do{
+#submit-to-do-modal{
     background-color: #ff6e40;
     color: white;
     width: 160px;
