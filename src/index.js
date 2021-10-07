@@ -12,12 +12,9 @@ const appLogic = (() => {
     function startUp(){
         allProjects.push(currentProject);
         const Today1 = createProject("Today", []);  
-        createToDo("Watch Squid Game with Heli", null, null, null, null, Today1);
-        createToDo("Watch Squid Game with Heli", null, null, null, null, Today1);
-        createToDo("Watch Squid Game with Heli", null, null, null, null, Today1);
-        createToDo("Watch Squid Game with Heli", null, null, null, null, Today1);
-        createToDo("Watch Squid Game with Heli", null, null, null, null, Today1);
-        createToDo("Watch Squid Game with Heli", null, null, null, null, Today1);
+        createToDo("Get Groceries", "Go to Fortinos", "7/10/2021T7:00", "high", "Get Frozen Pizza", currentProject);
+        createToDo("Clean out cupboard", "Use Vacuum", "7/10/2021T12:00", "medium", "Very Dusty", currentProject);
+        createToDo("Watch Squid Game", "Need to Update Netflix Subscription", "7/10/2021T:22:00" ,"low", "Upgrade Account", currentProject);
     }
 
     function getToDoByID(id){
