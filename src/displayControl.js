@@ -32,6 +32,17 @@ const displayControl = (() =>{
 
                     const toDoTime = document.createElement("div");
                     toDoTime.id = "to-do-time";
+                    console.log(project.getToDos()[i].getPriority());
+                    if(project.getToDos()[i].getPriority() == 'high'){
+                        console.log('abc')
+                        toDoWrapper.style.backgroundColor = '#ff6e40'
+                    }
+                    if(project.getToDos()[i].getPriority() == 'medium'){
+                        toDoWrapper.style.backgroundColor = "#feb05a";
+                    }
+                    if(project.getToDos()[i].getPriority() == 'low'){
+                        toDoWrapper.style.backgroundColor = "#fee17b";
+                    }
                     if(project.getToDos()[i].getDueDate()){
                         toDoTime.textContent = project.getToDos()[i].getDueDate().replace('T', ' ');
                     }
@@ -142,7 +153,6 @@ const displayControl = (() =>{
         document.querySelector("#to-do-due-date").value = selectedToDo.getDueDate();
         document.querySelector("#priority").value = selectedToDo.getPriority();
         document.querySelector("#project-list-create-to-do").value = selectedToDo.getProject().getName();
-        console.log(document.querySelector("#project-list-create-to-do").value)
         document.querySelector("#to-do-notes").value = selectedToDo.getNotes();
         const displayModal = document.querySelector(".modal-view")
         const modalTitle = document.querySelector(".modal-title");
@@ -200,6 +210,8 @@ const displayControl = (() =>{
         }
     }
 
+    function setPriorityColor(){}
+
     function editToDo(e, selectedToDo){
         e.preventDefault();
         appLogic.deleteToDoByID(selectedToDo.getId());
@@ -229,7 +241,6 @@ const displayControl = (() =>{
     }
 
     function getProjectFromId(id){
-        console.log(id);
         for(let i=0;i<appLogic.allProjects.length;i++){
             if(appLogic.allProjects[i].getId()== id){
                 return appLogic.allProjects[i];

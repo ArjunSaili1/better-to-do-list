@@ -106,7 +106,7 @@ body{
     height: auto;
     padding-top: 0px;
     margin-left: auto;
-    color: #ff6e40;
+    color: #1e3d59;
 }
 
 .to-do-obj{
@@ -114,6 +114,8 @@ body{
     align-items: center;
     border-bottom: 1px solid #ddcc9a;
     margin-bottom: 28px;
+    padding: 0px 10px 0px 10px;
+    border-radius: 10px;
 }
 
 
@@ -122,7 +124,6 @@ body{
 }
 
 .modal-view{
-    /* display: flex; */
     display: none;
     position: absolute;
     top: 0;
@@ -206,7 +207,7 @@ textarea{
 }
 
 #to-do-time{
-    color: grey;
+    color: #1e3d59;
     margin-left: auto;
     font-size: 18px;
 }
@@ -231,6 +232,7 @@ input[type='checkbox']{
 
 .to-do-name{
     font-size: 19px;
+    color: #1e3d59;
 }
 
 #content{

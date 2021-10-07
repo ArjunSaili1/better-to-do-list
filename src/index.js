@@ -45,6 +45,7 @@ const appLogic = (() => {
     }
 
     function createToDo(title, description, dueDate, priority, notes, project){
+        console.log(priority)
         const newToDo = ToDo(title, description, dueDate, priority, notes, "b" + uuidv4(), project);
         project.addToDo(newToDo);
         displayControl.render();
