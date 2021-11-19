@@ -175,6 +175,9 @@ const displayControl = (() =>{
         document.querySelector("#open-menu").addEventListener("click", openSideMenu)
         document.querySelector("#add-project-wrapper").addEventListener("click", displayProjectAdd);
         document.querySelector("#add-to-do").addEventListener("click", displayCreateModal);
+        document.querySelector("#home").addEventListener("click", (e)=>{
+            document.querySelector("#inbox").click();
+        })
     }
 
     function openSideMenu(e){
