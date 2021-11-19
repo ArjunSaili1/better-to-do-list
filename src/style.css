@@ -6,6 +6,34 @@
     box-sizing: border-box;
 }
 
+@media (max-width: 750px){
+    .to-do-name{
+        font-size: 12px !important;
+    }
+    #to-do-time {
+        font-size: 11px !important;
+    }
+    .icon{
+        font-size: 16px !important;
+    }
+    .details{
+        font-size: 15px !important;
+    }
+    .modal-title{
+        font-size: 30px !important;
+    }
+    .to-do-input{
+        font-size: 15px !important;
+    }
+    .description-note-heading{
+        font-size: 15px !important;
+    }
+    .description-note-text{
+        font-size: 10px !important;
+    }
+
+}
+
 @media only screen and (max-width: 1000px){
     #sidebar{
         position:absolute;
@@ -133,7 +161,6 @@ body{
 
 #todo-container{
     height: 85%;
-    padding: 0px 20px 50px 50px;
 }
 
 .to-do-actions{
@@ -177,7 +204,8 @@ body{
 }
 
 #icons-wrapper{
-    margin-bottom: 10px;
+    display: flex;
+    align-items: center;
     height: auto;
     padding-top: 0px;
     margin-left: auto;
@@ -189,7 +217,7 @@ body{
     align-items: center;
     border-bottom: 1px solid #ddcc9a;
     margin: 28px 0px 10px 0px;
-    padding: 0px 10px 0px 10px;
+    padding: 20px 10px 20px 10px;
     border-radius: 10px;
 }
 
@@ -211,6 +239,7 @@ body{
 
 .modal-title{
     width: 90%;
+    padding-bottom: 10px;
     font-size: 50px;
     font-weight: bold;
     position: relative;
@@ -229,7 +258,7 @@ body{
 
 .to-do-input{
     font-family: 'Source Sans Pro', sans-serif;
-    height: 45px;
+    padding: 10px;
     width: 100%;
     font-size: 30px;
     outline: none;
@@ -260,9 +289,8 @@ textarea{
 
 .details{
     font-weight: 500;
-    margin-bottom: 5px;
+    margin-top: 10px;
     display: block;
-    margin: 20px 0px 12px 0px;
     font-size: 30px;
 }
 
