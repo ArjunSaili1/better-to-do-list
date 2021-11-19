@@ -2,8 +2,7 @@
 A better take on the to-do list. An application that helps you plan your projects, days and goals. Built with HTML, CSS, & JS.
 
 ## Project Status
-Near Complete.
-Needs better responsive design implementation. 
+Complete
 
 ## Screenshots
 ### Main layout
