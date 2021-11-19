@@ -8,6 +8,7 @@ Needs better responsive design implementation.
 # Screenshots
 ### Main layout
 <img width="1512" alt="Screen Shot 2021-11-18 at 8 33 18 PM" src="https://user-images.githubusercontent.com/66842156/142542575-0fe802bf-0f78-4ff7-999e-c00cf5667a8d.png">
+
 ### Create To Do Modal
 <img width="1512" alt="Screen Shot 2021-11-18 at 8 33 34 PM" src="https://user-images.githubusercontent.com/66842156/142542481-e114edd1-4b6e-43e7-9f21-72384ae7977c.png">
 
