@@ -69,6 +69,7 @@ body{
     background-color: #ff6e40;
     border-radius: 100%;
     float: right;
+    cursor: pointer;
     box-shadow: 5px 10px 5px -4px rgb(0 0 0 / 20%);
 }
 
@@ -80,6 +81,7 @@ body{
 #add-project-wrapper{
     display: flex;
     align-items: center;
+    cursor: pointer;
 }
 
 #add-project-icon{
@@ -99,6 +101,7 @@ body{
     padding: 2px;
     font-size: 26px;
     margin-left: 10px;
+    cursor: pointer;
 }
 
 
@@ -299,6 +302,7 @@ textarea{
 input[type='checkbox']{
     float: left;
     margin-right: 20px;
+    cursor: pointer;
 }
 
 .to-do-name{
@@ -327,6 +331,7 @@ input [type=checkbox]{
     font-size: 22px;
     margin-left: 50px;
     margin-bottom: 1vh;
+    cursor: pointer;
 }
 
 #todo-view{
@@ -343,6 +348,7 @@ input [type=checkbox]{
 }
 
 .top-logo{
+    cursor: pointer;
     color:#ff6e40;
     margin-left: 10px;
 }
