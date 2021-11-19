@@ -11,5 +11,9 @@ Complete
 ### Create To Do Modal
 <img width="1512" alt="Screen Shot 2021-11-18 at 8 33 34 PM" src="https://user-images.githubusercontent.com/66842156/142542481-e114edd1-4b6e-43e7-9f21-72384ae7977c.png">
 
+### Description and Notes Sections
+<img width="1512" alt="Screen Shot 2021-11-19 at 5 20 05 AM" src="https://user-images.githubusercontent.com/66842156/142606804-84aded9a-d0b3-463a-800f-aa322378b595.png">
+
+
 ## Reflection
 This project was my a culmination of learning JavaScript code organization in JavaScript through The Odin Project. I incorporated ES6 Modules, Web Pack, IFFEs, Factory Functions and more. I really felt that through project I was able to understand the fundemental priciples of code organization and gain experience in this facet of web development. Overall, I think I ended up creating a very strong project with effective design and implementaion. 
