@@ -9,6 +9,7 @@ const displayControl = (() =>{
 
     function render(){
         clearPage();
+        document.querySelector(".menu-screen-overlay").classList.remove("open-menu");
         for(let i=0; i < appLogic.allProjects.length; i++){
             const project = appLogic.allProjects[i];
             const newProject = document.createElement('li');
@@ -181,9 +182,10 @@ const displayControl = (() =>{
     }
 
     function openSideMenu(e){
-        const overlay = document.querySelector(".menu-screen-overlay");
-        overlay.classList.toggle("open-menu");
-        overlay.addEventListener("click", ()=>{overlay.classList.remove("open-menu");})
+        const menuOverlay = document.querySelector(".menu-screen-overlay");
+        const overlay = document.querySelector("#overlay")
+        menuOverlay.classList.toggle("open-menu");
+        overlay.addEventListener("click", ()=>{menuOverlay.classList.remove("open-menu");})
     }
 
     function displayCreateModal(e){

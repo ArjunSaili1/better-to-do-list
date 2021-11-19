@@ -90,6 +90,12 @@ body{
     font-weight: bold;
 }
 
+#overlay{
+    background-color: green;
+    width: 100%;
+    height: 100%;
+}
+
 #add-to-do{
     border: none;
     width: 50px;
