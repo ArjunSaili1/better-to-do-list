@@ -14,6 +14,8 @@ Complete
 ### Description and Notes Sections
 <img width="1512" alt="Screen Shot 2021-11-19 at 5 20 05 AM" src="https://user-images.githubusercontent.com/66842156/142606804-84aded9a-d0b3-463a-800f-aa322378b595.png">
 
+## Live Preview
+https://arjunsaili1.github.io/better-to-do-list/
 
 ## Reflection
 This project was my a culmination of learning JavaScript code organization in JavaScript through The Odin Project. I incorporated ES6 Modules, Web Pack, IFFEs, Factory Functions and more. I really felt that through project I was able to understand the fundemental priciples of code organization and gain experience in this facet of web development. Overall, I think I ended up creating a very strong project with effective design and implementaion. 
