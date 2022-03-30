@@ -2,13 +2,23 @@ import { ToDo } from "./ToDo";
 import { Project } from './project';
 import { displayControl } from "./displayControl";
 import { v4 as uuidv4 } from 'uuid';
+import { initializeApp } from "firebase/app";
 import './style.css';
+
+const firebaseConfig = {
+    apiKey: "AIzaSyDGAt1LX_0ujKSxY0H8alH3x_VDz7YG2Xo",
+    authDomain: "to-do-list-b4206.firebaseapp.com",
+    projectId: "to-do-list-b4206",
+    storageBucket: "to-do-list-b4206.appspot.com",
+    messagingSenderId: "559736845573",
+    appId: "1:559736845573:web:4ab2d4034244dbd0fff36c"
+};
 
 const appLogic = (() => {
 
     const allProjects = [];
     let currentProject = Project("Inbox", [], "inbox");
-
+    
     function startUp(){
         allProjects.push(currentProject);
         const Today1 = createProject("Today", []);  
@@ -66,7 +76,7 @@ const appLogic = (() => {
     return { getCurrentProject, startUp, currentProject, allProjects, createToDo, createProject, deleteToDoByID, getToDoByID, editToDo}
 })();
 
-
+const app = initializeApp(firebaseConfig);
 appLogic.startUp();
 
 export { appLogic } 
