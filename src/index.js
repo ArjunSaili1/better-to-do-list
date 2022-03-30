@@ -18,14 +18,14 @@ const appLogic = (() => {
         appId: "1:559736845573:web:4ab2d4034244dbd0fff36c"
     };
 
+    const app = initializeApp(firebaseConfig);
+    const db = getFirestore(app);
+
     const allProjects = [];
     let currentProject = Project("Inbox", [], "inbox");
-    
+
     async function startUp(){
-        const app = initializeApp(firebaseConfig);
-        const db = getFirestore(app);
         allProjects.push(currentProject);
-        const Today1 = createProject("Today", []);  
         createToDo("Get Groceries", "Go to Fortinos", "7/10/2021T7:00", "high", "Get Frozen Pizza", currentProject);
         createToDo("Clean out cupboard", "Use Vacuum", "7/10/2021T12:00", "medium", "Very Dusty", currentProject);
         createToDo("Watch Squid Game", "Need to Update Netflix Subscription", "7/10/2021T:22:00" ,"low", "Upgrade Account", currentProject);
@@ -61,11 +61,16 @@ const appLogic = (() => {
         displayControl.render();
     }
 
-    function createProject(name, todos){
-        const newProject = Project(name, todos, "a" + uuidv4());
-        allProjects.push(newProject);
-        displayControl.render();
-        return newProject;
+    async function createProject(projName){
+        try{
+            const projectRef = await addDoc(collection(db, "projects"),{
+                name: projName,
+                id: uuidv4(),
+            });
+            allProjects.push(projectRef);
+        }catch(e){
+            console.error("There was an issue in creating a project: ", e)
+        }
     }
 
     function getCurrentProject(){
