@@ -3,23 +3,27 @@ import { Project } from './project';
 import { displayControl } from "./displayControl";
 import { v4 as uuidv4 } from 'uuid';
 import { initializeApp } from "firebase/app";
+import { getFirestore } from "firebase/firestore";
+import { collection, addDoc } from "firebase/firestore";
 import './style.css';
 
-const firebaseConfig = {
-    apiKey: "AIzaSyDGAt1LX_0ujKSxY0H8alH3x_VDz7YG2Xo",
-    authDomain: "to-do-list-b4206.firebaseapp.com",
-    projectId: "to-do-list-b4206",
-    storageBucket: "to-do-list-b4206.appspot.com",
-    messagingSenderId: "559736845573",
-    appId: "1:559736845573:web:4ab2d4034244dbd0fff36c"
-};
-
 const appLogic = (() => {
+
+    const firebaseConfig = {
+        apiKey: "AIzaSyDGAt1LX_0ujKSxY0H8alH3x_VDz7YG2Xo",
+        authDomain: "to-do-list-b4206.firebaseapp.com",
+        projectId: "to-do-list-b4206",
+        storageBucket: "to-do-list-b4206.appspot.com",
+        messagingSenderId: "559736845573",
+        appId: "1:559736845573:web:4ab2d4034244dbd0fff36c"
+    };
 
     const allProjects = [];
     let currentProject = Project("Inbox", [], "inbox");
     
-    function startUp(){
+    async function startUp(){
+        const app = initializeApp(firebaseConfig);
+        const db = getFirestore(app);
         allProjects.push(currentProject);
         const Today1 = createProject("Today", []);  
         createToDo("Get Groceries", "Go to Fortinos", "7/10/2021T7:00", "high", "Get Frozen Pizza", currentProject);
@@ -76,7 +80,6 @@ const appLogic = (() => {
     return { getCurrentProject, startUp, currentProject, allProjects, createToDo, createProject, deleteToDoByID, getToDoByID, editToDo}
 })();
 
-const app = initializeApp(firebaseConfig);
 appLogic.startUp();
 
 export { appLogic } 
