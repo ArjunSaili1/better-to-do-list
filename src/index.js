@@ -47,18 +47,18 @@ const appLogic = (() => {
         todo.setNotes(newNotes);
         todo.setProject(newProject);
         currentProject.deleteToDo(todo);
-        render();
+        render(db);
     }
 
     function deleteToDoByID(id){
         currentProject.deleteToDo(getToDoByID(id));
-        displayControl.render();
+        displayControl.render(db);
     }
 
     function createToDo(title, description, dueDate, priority, notes, project){
         const newToDo = ToDo(title, description, dueDate, priority, notes, "b" + uuidv4(), project);
         project.addToDo(newToDo);
-        displayControl.render();
+        displayControl.render(db);
     }
 
     async function createProject(projName){

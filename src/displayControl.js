@@ -1,16 +1,129 @@
 import { appLogic } from "./index";
+import { getDocs, collection } from 'firebase/firestore'
 
 const displayControl = (() =>{
 
     const projectList = document.querySelector("#project-list");
     const toDoListHtml = document.querySelector("#to-do-list")
     const toDoHeading = document.querySelector("#todo-heading");
-    let currentProjectId = 'inbox';
+    let currentProjectId = null;
+    let allProjects = [];
 
-    function render(){
-        clearPage();
+    function createElementWithProps(elementType, elementClass, elementId, elementText){
+        const newElement = document.createElement(elementType);
+        elementClass ? newElement.classList = elementClass : null;
+        elementId ? newElement.id = elementId: null;
+        elementText ? newElement.textContent = elementText : null;
+        return newElement;
+    }
+
+    function addChilds(parent, children){
+        children.forEach((child)=>{
+            parent.appendChild(child);
+        })
+    }
+
+    function clearPage(){
+        projectList.innerHTML = '';
+        toDoListHtml.innerHTML = '';
+    }
+
+    function render(db){
         document.querySelector(".menu-screen-overlay").classList.remove("open-menu");
-        for(let i=0; i < appLogic.allProjects.length; i++){
+        const projCol = collection(db, 'projects');
+        getDocs(projCol).then((snapshot)=>{
+            snapshot.docs.forEach((doc)=>{
+                if(allProjects.indexOf(doc.id) !== -1){return;}
+                allProjects.push(doc.id)
+                const name = doc.data().name;
+                const newProject = createElementWithProps('li', "project-list", doc.id, name);
+                currentProjectId == null ? currentProjectId = doc.id : currentProjectId = null;
+                if(newProject.id === currentProjectId){
+                    newProject.style.fontWeight = "bold";
+                    toDoHeading.textContent = newProject.textContent;
+                    const toDos = collection(db, 'projects', doc.id, 'toDos');
+                    renderToDos(toDos)
+                }
+                projectList.appendChild(newProject);
+            })
+        })
+    }
+
+    function renderToDos(toDos){
+        getDocs(toDos).then((snapshot)=>{
+            snapshot.docs.forEach((toDo)=>{
+                console.log(toDo.data())
+                const title = toDo.data().title;
+                const priorityRef = toDo.data().priority
+                const largeToDoWrapper = createElementWithProps("div");
+                const toDoWrapper = createElementWithProps('div', 'to-do-obj');
+                const toDoMain = createElementWithProps('div', null, 'to-do-wrapper');
+                const checkBox = createElementWithProps('input');
+                checkBox.type = "checkbox";
+                const toDoObj = createElementWithProps('li', 'to-do-name', toDo.id, title);
+                const toDoTime = createElementWithProps('div', null, 'to-do-time');
+                priorityRef == "high" ? toDoWrapper.style.backgroundColor = '#ff6e40' : null
+                priorityRef == "medium" ? toDoWrapper.style.backgroundColor = "#feb05a" : null
+                priority == "low" ? toDoWrapper.style.backgroundColor = "#fee17b" : null
+                addChilds(toDoWrapper, [checkBox, toDoObj, toDoTime, createIcons()])
+                largeToDoWrapper.appendChild(toDoWrapper);
+                toDoListHtml.appendChild(largeToDoWrapper)
+                const descriptionSection = createDescriptionNotesSection(toDo.data().description, toDo.data().notes);
+                descriptionSection.id = "description-" + toDo.data().id
+                toDoListHtml.appendChild(descriptionSection)
+
+            })
+        })
+    }
+
+    function createIcons(){
+        const icons = ['edit', 'delete', 'keyboard_arrow_down'];
+        const iconsContainer = createElementWithProps('div', null, 'icons-wrapper');
+        const iconsWrapper = createElementWithProps('div', 'to-do-actions', 'icons-wrapper');
+        icons.forEach((icon)=>{
+            const newIcon = createElementWithProps('span', "material-icons", null, icon);
+            newIcon.classList.add('icon');
+            iconsWrapper.appendChild(newIcon);
+        })
+        iconsWrapper.children[2].id = 'open-description-dropdown';
+        iconsWrapper.children[2].addEventListener("click", openDescriptionDropdown);
+        iconsWrapper.children[1].id = "delete-to-do";
+        // iconsWrapper.children[1].addEventListener("click", deleteToDo);
+        iconsWrapper.children[0].id = "edit-to-do";
+        // iconsWrapper.children[0].addEventListener("click", displayEditModal);
+        iconsContainer.appendChild(iconsWrapper);    
+        return iconsContainer;
+    }
+
+    function createDescriptionNotesSection(descriptionTxt, noteTxt){
+        const descriptionWrapper = createElementWithProps('div', "description-note-wrapper");
+        const descriptionHeading = createElementWithProps('div', "description-note-heading", null, "Description");
+        const descriptionTextContainer = createElementWithProps('div', "description-note-text-container");
+        const descriptionText = createElementWithProps('div', "description-note-text", null, descriptionTxt);
+        descriptionTextContainer.appendChild(descriptionText);
+        const noteHeading = createElementWithProps('div', "description-note-heading", null, "Notes");
+        const noteTextContainer = createElementWithProps('div', "description-note-text-container");
+        const noteText = createElementWithProps('div', "description-note-text", null, noteTxt);
+        noteTextContainer.appendChild(noteText);
+        addChilds(descriptionWrapper, [descriptionHeading, descriptionTextContainer, noteHeading, noteTextContainer]);
+        return descriptionWrapper;
+    }
+
+    function deleteToDo(e){
+        // TO DOpd
+    }
+
+    function openDescriptionDropdown(e){
+        e.target.parentNode.parentNode.parentNode.parentNode.nextSibling.classList.toggle("show-display");
+        if(e.target.textContent == "keyboard_arrow_down"){
+            e.target.textContent = "keyboard_arrow_up";
+        }
+        else{
+            e.target.textContent = "keyboard_arrow_down";
+        }
+    }
+
+ /*        for(let i=0; i < appLogic.allProjects.length; i++){
             const project = appLogic.allProjects[i];
             const newProject = document.createElement('li');
             newProject.textContent = project.getName();
@@ -94,44 +207,6 @@ const displayControl = (() =>{
     function compeleteTask(e){
         setTimeout(()=>{appLogic.deleteToDoByID((locateToDo(e.target.parentNode.children)).getId())}, 100);
         //do some animation
-    }
-
-    function createIcons(){
-        const icons = ['edit', 'delete', 'keyboard_arrow_down'];
-        const iconsContainer = document.createElement('div');
-        iconsContainer.id = 'icons-container';
-        const iconsWrapper = document.createElement('div');
-        iconsWrapper.id = 'icons-wrapper';
-        iconsWrapper.classList.add('to-do-actions');
-        for(let i=0;i<icons.length;i++){
-            const newIcon = document.createElement('span');
-            newIcon.classList.add("material-icons");
-            newIcon.textContent = icons[i];
-            newIcon.classList.add('icon');
-            iconsWrapper.appendChild(newIcon);
-        }
-        iconsWrapper.children[2].id = 'open-description-dropdown';
-        iconsWrapper.children[2].addEventListener("click", openDescriptionDropdown);
-        iconsWrapper.children[1].id = "delete-to-do";
-        iconsWrapper.children[1].addEventListener("click", deleteToDo);
-        iconsWrapper.children[0].id = "edit-to-do";
-        iconsWrapper.children[0].addEventListener("click", displayEditModal);
-        iconsContainer.appendChild(iconsWrapper);    
-        return iconsContainer;
-    }
-
-    function openDescriptionDropdown(e){
-        e.target.parentNode.parentNode.parentNode.parentNode.nextSibling.classList.toggle("show-display");
-        if(e.target.textContent == "keyboard_arrow_down"){
-            e.target.textContent = "keyboard_arrow_up";
-        }
-        else{
-            e.target.textContent = "keyboard_arrow_down";
-        }
-    }
-
-    function deleteToDo(e){
-        appLogic.deleteToDoByID(locateToDo(e.target.parentNode.parentNode.parentNode.children).getId());
     }
 
     function createProjectAddSection(){
@@ -259,14 +334,16 @@ const displayControl = (() =>{
     function populateProjectDropdown(){
         const dropdown = document.querySelector("#project-list-create-to-do")
         dropdown.innerHTML = '';
-        for(let i =0; i< appLogic.allProjects.length; i++){
+
+        console.log(appLogic.allProjects)
+        appLogic.allProjects.forEach((project)=>{
+            console.log(pathSegments)
             const newOption = document.createElement("option");
-            newOption.setAttribute("projectId", appLogic.allProjects[i].getId())
-            newOption.value = appLogic.allProjects[i].getName();
             newOption.classList.add('project-select');
-            newOption.textContent = appLogic.allProjects[i].getName();
-            dropdown.appendChild(newOption);
-        }
+            newOption.setAttribute("projectId", pathSegments[1]);
+            newOption.textContent = pathSegments[0];
+            dropdown.appendChild(newOption)
+        })
     }
 
     function editToDo(e, selectedToDo){
@@ -338,9 +415,9 @@ const displayControl = (() =>{
 
     function getCurrentProjectId(){
         return currentProjectId;
-    }
+    } */
 
-    return {render, getCurrentProjectId}
+    return {render}
 })();
 
 export { displayControl }
