@@ -113,12 +113,8 @@ const displayControl = (() =>{
 
     function openDescriptionDropdown(e){
         e.target.parentNode.parentNode.parentNode.parentNode.nextSibling.classList.toggle("show-display");
-        if(e.target.textContent == "keyboard_arrow_down"){
-            e.target.textContent = "keyboard_arrow_up";
-        }
-        else{
-            e.target.textContent = "keyboard_arrow_down";
-        }
+        const text = e.target.textContent
+        text == "keyboard_arrow_down" ? text = "keyboard_arrow_up" : text = "keyboard_arrow_down";
     }
 
  /*        for(let i=0; i < appLogic.allProjects.length; i++){
