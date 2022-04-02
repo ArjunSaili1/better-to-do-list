@@ -1,5 +1,5 @@
 import { appLogic } from "./index";
-import { getDocs, collection } from 'firebase/firestore'
+import { getDocs, collection, deleteDoc } from 'firebase/firestore'
 
 const displayControl = (() =>{
 
@@ -21,11 +21,6 @@ const displayControl = (() =>{
         children.forEach((child)=>{
             parent.appendChild(child);
         })
-    }
-
-    function clearPage(){
-        projectList.innerHTML = '';
-        toDoListHtml.innerHTML = '';
     }
 
     function render(db){
@@ -65,7 +60,8 @@ const displayControl = (() =>{
                 priorityRef == "high" ? toDoWrapper.style.backgroundColor = '#ff6e40' : null
                 priorityRef == "medium" ? toDoWrapper.style.backgroundColor = "#feb05a" : null
                 priority == "low" ? toDoWrapper.style.backgroundColor = "#fee17b" : null
-                addChilds(toDoWrapper, [checkBox, toDoObj, toDoTime, createIcons()])
+                addChilds(toDoWrapper, [checkBox, toDoObj, toDoTime, createIcons(toDo)])
+                console.log(toDo)
                 largeToDoWrapper.appendChild(toDoWrapper);
                 toDoListHtml.appendChild(largeToDoWrapper)
                 const descriptionSection = createDescriptionNotesSection(toDo.data().description, toDo.data().notes);
@@ -76,7 +72,7 @@ const displayControl = (() =>{
         })
     }
 
-    function createIcons(){
+    function createIcons(doc){
         const icons = ['edit', 'delete', 'keyboard_arrow_down'];
         const iconsContainer = createElementWithProps('div', null, 'icons-wrapper');
         const iconsWrapper = createElementWithProps('div', 'to-do-actions', 'icons-wrapper');
@@ -88,7 +84,7 @@ const displayControl = (() =>{
         iconsWrapper.children[2].id = 'open-description-dropdown';
         iconsWrapper.children[2].addEventListener("click", openDescriptionDropdown);
         iconsWrapper.children[1].id = "delete-to-do";
-        // iconsWrapper.children[1].addEventListener("click", deleteToDo);
+        iconsWrapper.children[1].addEventListener("click", deleteToDo.bind(null, doc));
         iconsWrapper.children[0].id = "edit-to-do";
         // iconsWrapper.children[0].addEventListener("click", displayEditModal);
         iconsContainer.appendChild(iconsWrapper);    
@@ -109,8 +105,9 @@ const displayControl = (() =>{
         return descriptionWrapper;
     }
 
-    function deleteToDo(e){
-        // TO DOpd
+    async function deleteToDo(doc){
+        await deleteDoc(doc.ref)
+        location.reload()
     }
 
     function openDescriptionDropdown(e){
