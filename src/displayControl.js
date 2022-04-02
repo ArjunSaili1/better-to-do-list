@@ -1,5 +1,5 @@
 import { appLogic } from "./index";
-import { getDocs, collection, deleteDoc } from 'firebase/firestore'
+import { getDocs, collection, deleteDoc, updateDoc } from 'firebase/firestore'
 
 const displayControl = (() =>{
 
@@ -7,6 +7,8 @@ const displayControl = (() =>{
     const toDoListHtml = document.querySelector("#to-do-list")
     const toDoHeading = document.querySelector("#todo-heading");
     let currentProjectId = null;
+    let projCol;
+    
     let allProjects = [];
 
     function createElementWithProps(elementType, elementClass, elementId, elementText){
@@ -24,8 +26,8 @@ const displayControl = (() =>{
     }
 
     function render(db){
+        projCol = collection(db, 'projects');
         document.querySelector(".menu-screen-overlay").classList.remove("open-menu");
-        const projCol = collection(db, 'projects');
         getDocs(projCol).then((snapshot)=>{
             snapshot.docs.forEach((doc)=>{
                 if(allProjects.indexOf(doc.id) !== -1){return;}
@@ -47,7 +49,6 @@ const displayControl = (() =>{
     function renderToDos(toDos){
         getDocs(toDos).then((snapshot)=>{
             snapshot.docs.forEach((toDo)=>{
-                console.log(toDo.data())
                 const title = toDo.data().title;
                 const priorityRef = toDo.data().priority
                 const largeToDoWrapper = createElementWithProps("div");
@@ -87,7 +88,7 @@ const displayControl = (() =>{
         iconsWrapper.children[1].id = "delete-to-do";
         iconsWrapper.children[1].addEventListener("click", deleteToDo.bind(null, doc));
         iconsWrapper.children[0].id = "edit-to-do";
-        // iconsWrapper.children[0].addEventListener("click", displayEditModal);
+        iconsWrapper.children[0].addEventListener("click", displayEditModal.bind(null, doc));
         iconsContainer.appendChild(iconsWrapper);    
         return iconsContainer;
     }
@@ -115,6 +116,68 @@ const displayControl = (() =>{
         e.target.parentNode.parentNode.parentNode.parentNode.nextSibling.classList.toggle("show-display");
         const text = e.target.textContent
         text == "keyboard_arrow_down" ? text = "keyboard_arrow_up" : text = "keyboard_arrow_down";
+    }
+
+    function displayEditModal(toDoRef){
+        const toDo = toDoRef.data();
+        document.querySelector("#to-do-title").value = toDo.title;
+        document.querySelector("#to-do-description").value = toDo.description;
+        document.querySelector("#to-do-due-date").value = toDo.dueDate;
+        document.querySelector("#priority").value = toDo.priority
+        document.querySelector("#to-do-notes").value = toDo.notes;
+        document.querySelector(".modal-view").style.display = 'flex';
+        document.querySelector(".modal-title").textContent = "Edit To Do";
+        document.querySelector(".modal-form").id = "edit-modal-form";
+        document.querySelector("#submit-to-do-modal").value = "Edit To Do";
+        document.querySelector(".close-modal").addEventListener("click", closeModal);
+        populateProjectDropdown();
+        addClickEditHandler(toDoRef);
+    }
+
+    function addClickEditHandler(toDoRef){
+        document.querySelector("#edit-modal-form").addEventListener("submit", function(e){
+            editToDo(e, toDoRef);
+        });
+    }
+
+    async function editToDo(e, selectedToDo){
+        e.preventDefault();
+        console.log()
+        console.log(e.target[1])
+        console.log(e.target[2])
+        console.log(e.target[3])
+        console.log(e.target[4])
+        await updateDoc(selectedToDo.ref, {
+            title: e.target[0].value,
+            description: e.target[1].value,
+            dueDate: e.target[2].value,
+            priority: e.target[3].value,
+            notes: e.target[5].value
+        })
+        location.reload()
+    }
+
+    function closeModal(e){
+        e.target.id = "modal-form";
+        document.querySelector(".modal-view").style.display = "none";;
+        document.querySelector(".close-modal").removeEventListener("click", closeModal);
+        document.querySelector("#submit-to-do-modal").value = "";
+        const modalForm = document.querySelector(".modal-form");
+        const modalFormClone = modalForm.cloneNode(true);
+        modalForm.parentNode.replaceChild(modalFormClone, modalForm);
+    }
+
+    function populateProjectDropdown(){
+        const dropdown = document.querySelector("#project-list-create-to-do")
+        dropdown.innerHTML = '';
+        getDocs(projCol).then((snapshot)=>{
+            snapshot.docs.forEach((doc)=>{
+                const name = doc.data().name
+                let project = createElementWithProps("option", "to-do-input", "project-list-create-to-do", name)
+                project.value = name;
+                dropdown.appendChild(project);
+            })
+        })
     }
 
  /*        for(let i=0; i < appLogic.allProjects.length; i++){
@@ -168,11 +231,6 @@ const displayControl = (() =>{
         }
         projectList.appendChild(createProjectAddSection());
         bindEvents();
-    }
-
-    function compeleteTask(e){
-        setTimeout(()=>{appLogic.deleteToDoByID((locateToDo(e.target.parentNode.children)).getId())}, 100);
-        //do some animation
     }
 
     function createProjectAddSection(){
@@ -247,27 +305,6 @@ const displayControl = (() =>{
         document.querySelector("#create-modal-form").addEventListener("submit", makeToDo);
     }
 
-    function displayEditModal(e){
-        const selectedToDo = locateToDo(e.target.parentNode.parentNode.parentNode.children);
-        document.querySelector("#to-do-title").value = selectedToDo.getTitle();
-        document.querySelector("#to-do-description").value = selectedToDo.getDescription();
-        document.querySelector("#to-do-due-date").value = selectedToDo.getDueDate();
-        document.querySelector("#priority").value = selectedToDo.getPriority();
-        document.querySelector("#project-list-create-to-do").value = selectedToDo.getProject().getName();
-        document.querySelector("#to-do-notes").value = selectedToDo.getNotes();
-        const displayModal = document.querySelector(".modal-view")
-        const modalTitle = document.querySelector(".modal-title");
-        const modalForm = document.querySelector(".modal-form");
-        const submitButton = document.querySelector("#submit-to-do-modal");
-        submitButton.value = "Edit To Do";
-        modalForm.id = "edit-modal-form";
-        modalTitle.textContent = "Edit To Do";
-        displayModal.style.display = 'flex';
-        document.querySelector(".close-modal").addEventListener("click", closeModal);
-        populateProjectDropdown();
-        addClickEditHandler(selectedToDo)
-    }
-
     function locateToDo(todoobj){
         for(let i=0; i<= todoobj.length; i++){
             if(todoobj[i]){
@@ -276,47 +313,6 @@ const displayControl = (() =>{
                 }
             }
         }
-    }
-
-    function addClickEditHandler(selectedToDo){
-        document.querySelector("#edit-modal-form").addEventListener("submit", function(e){
-            editToDo(e, selectedToDo);
-        });
-    }
-
-    function closeModal(e){
-        e.target.id = "modal-form";
-        const displayModal = document.querySelector(".modal-view");
-        displayModal.style.display = "none";
-        document.querySelector(".close-modal").removeEventListener("click", closeModal);
-        const submitButton = document.querySelector("#submit-to-do-modal");
-        submitButton.value = "";
-        const modalForm = document.querySelector(".modal-form");
-        const modalFormClone = modalForm.cloneNode(true);
-        modalForm.parentNode.replaceChild(modalFormClone, modalForm);
-
-    }
-
-    function populateProjectDropdown(){
-        const dropdown = document.querySelector("#project-list-create-to-do")
-        dropdown.innerHTML = '';
-
-        console.log(appLogic.allProjects)
-        appLogic.allProjects.forEach((project)=>{
-            console.log(pathSegments)
-            const newOption = document.createElement("option");
-            newOption.classList.add('project-select');
-            newOption.setAttribute("projectId", pathSegments[1]);
-            newOption.textContent = pathSegments[0];
-            dropdown.appendChild(newOption)
-        })
-    }
-
-    function editToDo(e, selectedToDo){
-        e.preventDefault();
-        appLogic.deleteToDoByID(selectedToDo.getId());
-        makeToDo(e);
-        document.querySelector(".close-modal").click();
     }
 
     function makeToDo(e){
