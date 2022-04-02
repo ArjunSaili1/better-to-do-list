@@ -55,6 +55,7 @@ const displayControl = (() =>{
                 const toDoMain = createElementWithProps('div', null, 'to-do-wrapper');
                 const checkBox = createElementWithProps('input');
                 checkBox.type = "checkbox";
+                checkBox.addEventListener("click", deleteToDo.bind(null, toDo))
                 const toDoObj = createElementWithProps('li', 'to-do-name', toDo.id, title);
                 const toDoTime = createElementWithProps('div', null, 'to-do-time');
                 priorityRef == "high" ? toDoWrapper.style.backgroundColor = '#ff6e40' : null
@@ -171,34 +172,6 @@ const displayControl = (() =>{
         }
         projectList.appendChild(createProjectAddSection());
         bindEvents();
-    }
-
-    function createDescriptionNotesSection(descriptionTxt, noteTxt){
-        const descriptionWrapper = document.createElement('div');
-        descriptionWrapper.classList.add("description-note-wrapper");
-        const descriptionHeading = document.createElement('div');
-        descriptionHeading.classList.add("description-note-heading");
-        descriptionHeading.textContent = "Description";
-        const descriptionTextContainer = document.createElement('div');
-        descriptionTextContainer.classList.add("description-note-text-container");
-        const descriptionText = document.createElement('div');
-        descriptionText.classList.add("description-note-text");
-        descriptionText.textContent = descriptionTxt;
-        descriptionTextContainer.appendChild(descriptionText);
-        const noteHeading = document.createElement("div");
-        noteHeading.classList.add("description-note-heading");
-        noteHeading.textContent = "Notes";
-        const noteTextContainer = document.createElement('div');
-        noteTextContainer.classList.add("description-note-text-container");
-        const noteText = document.createElement('div');
-        noteText.classList.add("description-note-text");
-        noteText.textContent = noteTxt;
-        noteTextContainer.appendChild(noteText);
-        descriptionWrapper.appendChild(descriptionHeading);
-        descriptionWrapper.appendChild(descriptionTextContainer);
-        descriptionWrapper.appendChild(noteHeading);
-        descriptionWrapper.appendChild(noteTextContainer);
-        return descriptionWrapper;
     }
 
     function compeleteTask(e){
@@ -402,12 +375,6 @@ const displayControl = (() =>{
         currentProjectId = e.target.id;
         render();
         appLogic.getCurrentProject();
-    }
-
-
-    function clearPage(){
-        projectList.innerHTML = '';
-        toDoListHtml.innerHTML = '';
     }
 
     function getCurrentProjectId(){
