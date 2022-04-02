@@ -180,6 +180,24 @@ const displayControl = (() =>{
         })
     }
 
+    function createProjectAddSection(){
+        const container = createElementWithProps("div", null, "add-project-container");
+        const addProjectWrapper = createElementWithProps("div", null, "add-project-wrapper");
+        const addIcon = createElementWithProps('span', 'material-icons', 'add-project-icon', 'add_circle_outline');
+        const addProjectButton = createElementWithProps("div", null, "add-project-button", "Add Project");
+        addChilds(addProjectWrapper, addIcon, addProjectButton);
+        container.appendChild(addProjectWrapper);
+        const addProjectInputContainer = createElementWithProps("div", null, "add-project-input-container");
+        const addProjectInput = createElementWithProps("input", null, "add-project-input");
+        addProjectInputContainer.appendChild(addProjectInput);
+        const confirmButton = createElementWithProps("button", "project-add-confirm-buttons", "confirm-project-add", "✓")
+        addProjectInputContainer.appendChild(confirmButton);
+        const cancelButton = createElementWithProps("button", "project-add-confirm-buttons", "cancel-project-add", "×");
+        addProjectInputContainer.appendChild(cancelButton);
+        container.appendChild(addProjectInputContainer);
+        return container;
+    }
+
  /*        for(let i=0; i < appLogic.allProjects.length; i++){
             const project = appLogic.allProjects[i];
             const newProject = document.createElement('li');
@@ -231,40 +249,6 @@ const displayControl = (() =>{
         }
         projectList.appendChild(createProjectAddSection());
         bindEvents();
-    }
-
-    function createProjectAddSection(){
-        const container = document.createElement("div");
-        container.id = "add-project-container";
-        const addProjectWrapper = document.createElement("div");
-        addProjectWrapper.id = "add-project-wrapper";
-        const addIcon = document.createElement('span');
-        addIcon.classList.add("material-icons");
-        addIcon.id = "add-project-icon";
-        addIcon.textContent = "add_circle_outline";
-        const addProjectButton = document.createElement("div");
-        addProjectButton.id="add-project-button";
-        addProjectButton.textContent = "Add Project";
-        addProjectWrapper.appendChild(addIcon);
-        addProjectWrapper.appendChild(addProjectButton);
-        container.appendChild(addProjectWrapper);
-        const addProjectInputContainer = document.createElement('div');
-        addProjectInputContainer.id = "add-project-input-container";
-        const addProjectInput = document.createElement("input");
-        addProjectInput.id = "add-project-input";
-        addProjectInputContainer.appendChild(addProjectInput);
-        const confirmButton = document.createElement("button");
-        confirmButton.classList.add("project-add-confirm-buttons");
-        confirmButton.id = "confirm-project-add";
-        addProjectInputContainer.appendChild(confirmButton);
-        const cancelButton = document.createElement("button");
-        cancelButton.classList.add("project-add-confirm-buttons");
-        cancelButton.id = "cancel-project-add";
-        cancelButton.textContent = "×";
-        confirmButton.textContent = "✓";
-        addProjectInputContainer.appendChild(cancelButton);
-        container.appendChild(addProjectInputContainer);
-        return container;
     }
 
     function bindEvents(){
