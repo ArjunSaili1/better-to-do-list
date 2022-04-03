@@ -40,7 +40,6 @@ const displayControl = (() =>{
         childArray.forEach((project)=>{
             if(project.tagName == 'LI'){
                 project.addEventListener('click', getToDos)
-                childArray.indexOf(project) == childArray.length - 1 ? project.click() : null;
             }
         })
     }
@@ -73,6 +72,8 @@ const displayControl = (() =>{
                 const newProject = createElementWithProps('li', "project-list", doc.id, name);
                 projectList.appendChild(newProject);
                 bindSwitchProject();
+                console.log(projectList)
+                currentProjectId == null ? projectList.children[projectList.children.length - 1].click() : null;
             })
         })
     }
@@ -206,6 +207,7 @@ const displayControl = (() =>{
     }
 
     async function newProject(e){
+        e.preventDefault();
         await addDoc(collection(db, "projects"),{
             name: e.target.parentNode.children[0].value
         })
@@ -245,9 +247,9 @@ const displayControl = (() =>{
             priority: e.target[3].value,
             notes: e.target[4].value
         })
-        closeModal();
+        location.reload()
     }
-    
+
     return {render}
 })();
 
