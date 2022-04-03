@@ -25,8 +25,24 @@ const displayControl = (() =>{
     const db = getFirestore(app);
 
     window.onload = ()=>{
+        bindEvents();
         render();
+    }
+
+    function bindEvents(){
+        document.querySelector("#open-menu").addEventListener("click", openSideMenu)
         document.querySelector("#add-project-wrapper").addEventListener('click', toggleNewProjectDisplay);
+        document.querySelector("#add-to-do").addEventListener("click", displayCreateModal);
+    }
+
+    function bindSwitchProject(){
+        const childArray = [...projectList.children]
+        childArray.forEach((project)=>{
+            if(project.tagName == 'LI'){
+                project.addEventListener('click', getToDos)
+                childArray.indexOf(project) == childArray.length - 1 ? project.click() : null;
+            }
+        })
     }
 
     function createElementWithProps(elementType, elementClass, elementId, elementText){
@@ -46,16 +62,6 @@ const displayControl = (() =>{
     function render(){
         projCol = collection(db, 'projects');
         renderProjects();
-/*         database = db;
-        projCol = collection(db, 'projects');
-        document.querySelector(".menu-screen-overlay").classList.remove("open-menu");
-                currentProjectId == null ? currentProjectId = doc.id : currentProjectId = null;
-                if(newProject.id === currentProjectId){
-                    const toDos = collection(db, 'projects', doc.id, 'toDos');
-                    renderToDos(toDos)
-                }
-            })
-        }) */
     }
 
     function renderProjects(){
@@ -71,16 +77,8 @@ const displayControl = (() =>{
         })
     }
 
-    function bindSwitchProject(){
-        const childArray = [...projectList.children]
-        childArray.forEach((project)=>{
-            if(project.tagName == 'LI'){
-                project.addEventListener('click', getToDos)
-            }
-        })
-    }
-
     function getToDos(e){
+        currentProjectId = e.target.id;
         toDoListHtml.innerHTML = '';
         toDoHeading.textContent = e.target.textContent;
         const toDos = collection(db, 'projects', e.target.id, 'toDos');
@@ -168,7 +166,6 @@ const displayControl = (() =>{
         document.querySelector(".modal-form").id = "edit-modal-form";
         document.querySelector("#submit-to-do-modal").value = "Edit To Do";
         document.querySelector(".close-modal").addEventListener("click", closeModal);
-        populateProjectDropdown();
         addClickEditHandler(toDoRef);
     }
 
@@ -191,26 +188,9 @@ const displayControl = (() =>{
     }
 
     function closeModal(e){
-        e.target.id = "modal-form";
         document.querySelector(".modal-view").style.display = "none";;
         document.querySelector(".close-modal").removeEventListener("click", closeModal);
-        document.querySelector("#submit-to-do-modal").value = "";
-        const modalForm = document.querySelector(".modal-form");
-        const modalFormClone = modalForm.cloneNode(true);
-        modalForm.parentNode.replaceChild(modalFormClone, modalForm);
-    }
-
-    function populateProjectDropdown(){
-        const dropdown = document.querySelector("#project-list-create-to-do")
-        dropdown.innerHTML = '';
-        getDocs(projCol).then((snapshot)=>{
-            snapshot.docs.forEach((doc)=>{
-                const name = doc.data().name
-                let project = createElementWithProps("option", "to-do-input", "project-list-create-to-do", name)
-                project.value = name;
-                dropdown.appendChild(project);
-            })
-        })
+        document.querySelector("#create-modal-form").removeEventListener("submit", makeToDo);
     }
 
     function toggleNewProjectDisplay(e){
@@ -230,72 +210,6 @@ const displayControl = (() =>{
             name: e.target.parentNode.children[0].value
         })
         location.reload()
-    }
-
- /*        for(let i=0; i < appLogic.allProjects.length; i++){
-            const project = appLogic.allProjects[i];
-            const newProject = document.createElement('li');
-            newProject.textContent = project.getName();
-            newProject.classList.add("project-list");
-            newProject.id = project.getId();
-            if(newProject.id == currentProjectId){
-                newProject.style.fontWeight = 'bold';
-                toDoHeading.textContent = newProject.textContent;
-                for(let i = 0; i<project.getToDos().length; i++){
-                    const largeToDoWrapper = document.createElement('div');
-                    const toDoWrapper = document.createElement('div');
-                    toDoWrapper.classList.add("to-do-obj");
-                    const toDoMain = document.createElement("div");
-                    toDoMain.id = 'to-do-wrapper';
-                    const checkbox = document.createElement('input');
-                    checkbox.type = "checkbox";
-                    const toDoObj = document.createElement("li");
-                    toDoObj.classList.add("to-do-name");
-                    toDoObj.textContent = project.getToDos()[i].getTitle();
-                    toDoObj.id = project.getToDos()[i].getId();
-                    const toDoTime = document.createElement("div");
-                    toDoTime.id = "to-do-time";
-                    if(project.getToDos()[i].getPriority() == 'high'){
-                        toDoWrapper.style.backgroundColor = '#ff6e40'
-                    }
-                    if(project.getToDos()[i].getPriority() == 'medium'){
-                        toDoWrapper.style.backgroundColor = "#feb05a";
-                    }
-                    if(project.getToDos()[i].getPriority() == 'low'){
-                        toDoWrapper.style.backgroundColor = "#fee17b";
-                    }
-                    if(project.getToDos()[i].getDueDate()){
-                        toDoTime.textContent = project.getToDos()[i].getDueDate().replace('T', ' ');
-                    }
-                    toDoWrapper.appendChild(checkbox);
-                    toDoWrapper.appendChild(toDoObj);
-                    toDoWrapper.appendChild(toDoTime);
-                    toDoWrapper.appendChild(createIcons());
-                    largeToDoWrapper.appendChild(toDoWrapper);
-                    toDoListHtml.appendChild(largeToDoWrapper);
-                    const descriptionSection = createDescriptionNotesSection(project.getToDos()[i].getDescription(), project.getToDos()[i].getNotes());
-                    descriptionSection.id = project.getToDos()[i].getId();
-                    toDoListHtml.appendChild(descriptionSection)
-                    checkbox.addEventListener("click",compeleteTask)
-                }
-            }
-            projectList.appendChild(newProject);
-        }
-        projectList.appendChild(createProjectAddSection());
-        bindEvents();
-    }
-
-    function bindEvents(){
-        for(let i=0; i < appLogic.allProjects.length; i++){
-            const project = document.querySelector("#" + appLogic.allProjects[i].getId());
-            project.addEventListener("click", switchProject);
-        }
-        document.querySelector("#open-menu").addEventListener("click", openSideMenu)
-        document.querySelector("#add-project-wrapper").addEventListener("click", displayProjectAdd);
-        document.querySelector("#add-to-do").addEventListener("click", displayCreateModal);
-        document.querySelector("#home").addEventListener("click", (e)=>{
-            document.querySelector("#inbox").click();
-        })
     }
 
     function openSideMenu(e){
@@ -319,58 +233,21 @@ const displayControl = (() =>{
         modalTitle.textContent = "Create New To Do";
         displayModal.style.display = 'flex';
         document.querySelector(".close-modal").addEventListener("click", closeModal);
-        populateProjectDropdown();
         document.querySelector("#create-modal-form").addEventListener("submit", makeToDo);
     }
 
-    function locateToDo(todoobj){
-        for(let i=0; i<= todoobj.length; i++){
-            if(todoobj[i]){
-                if(todoobj[i].tagName == 'LI'){
-                    return appLogic.getToDoByID(todoobj[i].id);
-                }
-            }
-        }
+    async function makeToDo(e){
+        e.preventDefault()
+        await addDoc(collection(db, "projects", currentProjectId, "toDos"),{
+            title: e.target[0].value,
+            description: e.target[1].value,
+            dueDate: e.target[2].value,
+            priority: e.target[3].value,
+            notes: e.target[4].value
+        })
+        closeModal();
     }
-
-    function makeToDo(e){
-        e.preventDefault();
-        const title = document.querySelector("#to-do-title").value;
-        const description = document.querySelector("#to-do-description").value;
-        const dueDate = document.querySelector("#to-do-due-date").value;
-        const priority = document.querySelector("#priority").value;
-        const projectValue = document.querySelector("#project-list-create-to-do").value;
-        const projectSelects = document.querySelectorAll('.project-select');
-        let projectId = null;
-        for(let i=0;i<projectSelects.length;i++){
-            if(projectSelects[i].textContent == projectValue){
-                projectId = projectSelects[i].getAttribute('projectId')
-            }
-        }
-        const notes = document.querySelector("#to-do-notes").value;
-        appLogic.createToDo(title, description, dueDate, priority, notes, getProjectFromId(projectId));
-
-        document.querySelector(".close-modal").click();
-    }
-
-    function getProjectFromId(id){
-        for(let i=0;i<appLogic.allProjects.length;i++){
-            if(appLogic.allProjects[i].getId()== id){
-                return appLogic.allProjects[i];
-            }
-        }
-    }
-
-    function switchProject(e){
-        currentProjectId = e.target.id;
-        render();
-        appLogic.getCurrentProject();
-    }
-
-    function getCurrentProjectId(){
-        return currentProjectId;
-    } */
-
+    
     return {render}
 })();
 
