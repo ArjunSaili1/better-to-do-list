@@ -1,5 +1,5 @@
 import { appLogic } from "./index";
-import { getDocs, collection, deleteDoc, updateDoc } from 'firebase/firestore'
+import { getDocs, collection, deleteDoc, updateDoc, addDoc} from 'firebase/firestore'
 
 const displayControl = (() =>{
 
@@ -8,8 +8,13 @@ const displayControl = (() =>{
     const toDoHeading = document.querySelector("#todo-heading");
     let currentProjectId = null;
     let projCol;
+    let database;
     
     let allProjects = [];
+
+    window.onload = ()=>{
+        document.querySelector("#add-project-wrapper").addEventListener('click', toggleNewProjectDisplay);
+    }
 
     function createElementWithProps(elementType, elementClass, elementId, elementText){
         const newElement = document.createElement(elementType);
@@ -26,10 +31,12 @@ const displayControl = (() =>{
     }
 
     function render(db){
+        database = db;
         projCol = collection(db, 'projects');
         document.querySelector(".menu-screen-overlay").classList.remove("open-menu");
         getDocs(projCol).then((snapshot)=>{
             snapshot.docs.forEach((doc)=>{
+                console.log(doc.data().name)
                 if(allProjects.indexOf(doc.id) !== -1){return;}
                 allProjects.push(doc.id)
                 const name = doc.data().name;
@@ -63,7 +70,6 @@ const displayControl = (() =>{
                 priorityRef == "medium" ? toDoWrapper.style.backgroundColor = "#feb05a" : null
                 priority == "low" ? toDoWrapper.style.backgroundColor = "#fee17b" : null
                 addChilds(toDoWrapper, [checkBox, toDoObj, toDoTime, createIcons(toDo)])
-                console.log(toDo)
                 largeToDoWrapper.appendChild(toDoWrapper);
                 toDoListHtml.appendChild(largeToDoWrapper)
                 const descriptionSection = createDescriptionNotesSection(toDo.data().description, toDo.data().notes);
@@ -142,11 +148,6 @@ const displayControl = (() =>{
 
     async function editToDo(e, selectedToDo){
         e.preventDefault();
-        console.log()
-        console.log(e.target[1])
-        console.log(e.target[2])
-        console.log(e.target[3])
-        console.log(e.target[4])
         await updateDoc(selectedToDo.ref, {
             title: e.target[0].value,
             description: e.target[1].value,
@@ -180,22 +181,23 @@ const displayControl = (() =>{
         })
     }
 
-    function createProjectAddSection(){
-        const container = createElementWithProps("div", null, "add-project-container");
-        const addProjectWrapper = createElementWithProps("div", null, "add-project-wrapper");
-        const addIcon = createElementWithProps('span', 'material-icons', 'add-project-icon', 'add_circle_outline');
-        const addProjectButton = createElementWithProps("div", null, "add-project-button", "Add Project");
-        addChilds(addProjectWrapper, addIcon, addProjectButton);
-        container.appendChild(addProjectWrapper);
-        const addProjectInputContainer = createElementWithProps("div", null, "add-project-input-container");
-        const addProjectInput = createElementWithProps("input", null, "add-project-input");
-        addProjectInputContainer.appendChild(addProjectInput);
-        const confirmButton = createElementWithProps("button", "project-add-confirm-buttons", "confirm-project-add", "✓")
-        addProjectInputContainer.appendChild(confirmButton);
-        const cancelButton = createElementWithProps("button", "project-add-confirm-buttons", "cancel-project-add", "×");
-        addProjectInputContainer.appendChild(cancelButton);
-        container.appendChild(addProjectInputContainer);
-        return container;
+    function toggleNewProjectDisplay(e){
+        const inputCtn = document.querySelector("#add-project-input-container")
+        inputCtn.style.display = 'flex';
+        document.querySelector("#confirm-project-add").addEventListener('click', newProject)
+        document.querySelector("#cancel-project-add").addEventListener("click", cancelNewProject);
+    }
+
+    function cancelNewProject(e){
+        e.target.parentNode.style.display = "none";
+        document.querySelector("#cancel-project-add").removeEventListener("click", cancelNewProject);
+    }
+
+    async function newProject(e){
+        await addDoc(collection(database, "projects"),{
+            name: e.target.parentNode.children[0].value
+        })
+        location.reload()
     }
 
  /*        for(let i=0; i < appLogic.allProjects.length; i++){
@@ -324,26 +326,6 @@ const displayControl = (() =>{
             if(appLogic.allProjects[i].getId()== id){
                 return appLogic.allProjects[i];
             }
-        }
-    }
-
-
-    function displayProjectAdd(e){
-        document.querySelector("#add-project-input-container").style.display = 'flex';
-        document.querySelector("#cancel-project-add").addEventListener("click", cancelNewProject);
-        document.querySelector("#confirm-project-add").addEventListener("click", generateNewProject);
-    }
-
-    function cancelNewProject(e){
-        document.querySelector("#cancel-project-add").removeEventListener("click", cancelNewProject);
-        document.querySelector("#confirm-project-add").removeEventListener("click", generateNewProject);
-        document.querySelector("#add-project-input-container").style.display = 'none';
-    }
-
-    function generateNewProject(e){
-        const inputValue = e.path[1].childNodes[0].value;
-        if(inputValue){
-            appLogic.createProject(e.path[1].childNodes[0].value, []);
         }
     }
 
