@@ -1,7 +1,7 @@
 import "./style.css";
-import { initializeApp } from "firebase/app";
+import db from "./firebase";
+import { createElementWithProps, addChildren } from "./utils/domHelpers";
 import {
-  getFirestore,
   getDocs,
   collection,
   deleteDoc,
@@ -16,18 +16,6 @@ const displayControl = (() => {
   let currentProjectId = null;
   let projCol;
   const allProjects = [];
-
-  const firebaseConfig = {
-    apiKey: "AIzaSyDGAt1LX_0ujKSxY0H8alH3x_VDz7YG2Xo",
-    authDomain: "to-do-list-b4206.firebaseapp.com",
-    projectId: "to-do-list-b4206",
-    storageBucket: "to-do-list-b4206.appspot.com",
-    messagingSenderId: "559736845573",
-    appId: "1:559736845573:web:4ab2d4034244dbd0fff36c",
-  };
-
-  const app = initializeApp(firebaseConfig);
-  const db = getFirestore(app);
 
   function bindEvents() {
     document
@@ -47,31 +35,6 @@ const displayControl = (() => {
       if (project.tagName === "LI") {
         project.addEventListener("click", getToDos);
       }
-    });
-  }
-
-  function createElementWithProps(
-    elementType,
-    elementClass,
-    elementId,
-    elementText
-  ) {
-    const newElement = document.createElement(elementType);
-    if (elementClass) {
-      newElement.classList = elementClass;
-    }
-    if (elementId) {
-      newElement.id = elementId;
-    }
-    if (elementText) {
-      newElement.textContent = elementText;
-    }
-    return newElement;
-  }
-
-  function addChilds(parent, children) {
-    children.forEach((child) => {
-      parent.appendChild(child);
     });
   }
 
@@ -96,7 +59,6 @@ const displayControl = (() => {
         );
         projectList.appendChild(newProject);
         bindSwitchProject();
-        console.log(projectList);
         if (currentProjectId === null) {
           projectList.children[projectList.children.length - 1].click();
         }
@@ -138,7 +100,7 @@ const displayControl = (() => {
         if (priorityRef === "low") {
           toDoWrapper.style.backgroundColor = "#fee17b";
         }
-        addChilds(toDoWrapper, [
+        addChildren(toDoWrapper, [
           checkBox,
           toDoObj,
           toDoTime,
@@ -229,7 +191,7 @@ const displayControl = (() => {
       noteTxt
     );
     noteTextContainer.appendChild(noteText);
-    addChilds(descriptionWrapper, [
+    addChildren(descriptionWrapper, [
       descriptionHeading,
       descriptionTextContainer,
       noteHeading,
