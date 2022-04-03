@@ -124,10 +124,8 @@ body{
 
 #add-project-input-container{
     display: none;
-    align-items: center;
     justify-content: center;
-    height: 36px;
-    margin: 20px;
+    align-items: center;
 }
 
 .project-add-confirm-buttons{
@@ -153,7 +151,6 @@ body{
 }
 
 #add-project-button{
-    width: 120px;
     font-size: 19px;
 }
 
