@@ -1,5 +1,7 @@
 import "./style.css";
 import db from "./firebase";
+import displayCreateModal from "./elements/createToDoModal";
+import displayEditModal from "./elements/editToDoModal";
 import { createElementWithProps, addChildren } from "./utils/domHelpers";
 import {
   getDocs,
@@ -26,7 +28,7 @@ const displayControl = (() => {
       .addEventListener("click", toggleNewProjectDisplay);
     document
       .querySelector("#add-to-do")
-      .addEventListener("click", displayCreateModal);
+      .addEventListener("click", displayCreateModal.bind(null, makeToDo));
   }
 
   function bindSwitchProject() {
@@ -146,7 +148,7 @@ const displayControl = (() => {
     iconsWrapper.children[0].id = "edit-to-do";
     iconsWrapper.children[0].addEventListener(
       "click",
-      displayEditModal.bind(null, doc)
+      displayEditModal.bind(null, doc, editToDo)
     );
     iconsContainer.appendChild(iconsWrapper);
     return iconsContainer;
@@ -217,31 +219,6 @@ const displayControl = (() => {
     }
   }
 
-  function displayEditModal(toDoRef) {
-    const toDo = toDoRef.data();
-    document.querySelector("#to-do-title").value = toDo.title;
-    document.querySelector("#to-do-description").value = toDo.description;
-    document.querySelector("#to-do-due-date").value = toDo.dueDate;
-    document.querySelector("#priority").value = toDo.priority;
-    document.querySelector("#to-do-notes").value = toDo.notes;
-    document.querySelector(".modal-view").style.display = "flex";
-    document.querySelector(".modal-title").textContent = "Edit To Do";
-    document.querySelector(".modal-form").id = "edit-modal-form";
-    document.querySelector("#submit-to-do-modal").value = "Edit To Do";
-    document
-      .querySelector(".close-modal")
-      .addEventListener("click", closeModal);
-    addClickEditHandler(toDoRef);
-  }
-
-  function addClickEditHandler(toDoRef) {
-    document
-      .querySelector("#edit-modal-form")
-      .addEventListener("submit", (e) => {
-        editToDo(e, toDoRef);
-      });
-  }
-
   async function editToDo(e, selectedToDo) {
     e.preventDefault();
     await updateDoc(selectedToDo.ref, {
@@ -252,16 +229,6 @@ const displayControl = (() => {
       notes: e.target[5].value,
     });
     window.location.reload();
-  }
-
-  function closeModal() {
-    document.querySelector(".modal-view").style.display = "none";
-    document
-      .querySelector(".close-modal")
-      .removeEventListener("click", closeModal);
-    document
-      .querySelector("#create-modal-form")
-      .removeEventListener("submit", makeToDo);
   }
 
   function toggleNewProjectDisplay() {
@@ -297,27 +264,6 @@ const displayControl = (() => {
     overlay.addEventListener("click", () => {
       menuOverlay.classList.remove("open-menu");
     });
-  }
-
-  function displayCreateModal() {
-    const displayModal = document.querySelector(".modal-view");
-    const modalTitle = document.querySelector(".modal-title");
-    const modalForm = document.querySelector(".modal-form");
-    const submitButton = document.querySelector("#submit-to-do-modal");
-    const allInputs = document.querySelectorAll(".to-do-input");
-    allInputs.forEach((input) => {
-      input.value = "";
-    });
-    submitButton.value = "Create To Do";
-    modalForm.id = "create-modal-form";
-    modalTitle.textContent = "Create New To Do";
-    displayModal.style.display = "flex";
-    document
-      .querySelector(".close-modal")
-      .addEventListener("click", closeModal);
-    document
-      .querySelector("#create-modal-form")
-      .addEventListener("submit", makeToDo);
   }
 
   async function makeToDo(e) {
