@@ -1,10 +1,4 @@
 import "./style.css";
-import db from "./firebase";
-import displayCreateModal from "./elements/createToDoModal";
-import { createElementWithProps, addChildren } from "./utils/domHelpers";
-import { createIcons, createDescriptionNotesSection } from "./elements/toDoSections";
-import {toggleNewProjectDisplay, bindSwitchProject} from "./elements/projects";
-import openSideMenu from "./elements/openSideMenu";
 import {
   getDocs,
   collection,
@@ -12,6 +6,18 @@ import {
   updateDoc,
   addDoc,
 } from "firebase/firestore";
+import db from "./firebase";
+import displayCreateModal from "./elements/createToDoModal";
+import { createElementWithProps, addChildren } from "./utils/domHelpers";
+import {
+  createIcons,
+  createDescriptionNotesSection,
+} from "./elements/toDoSections";
+import {
+  toggleNewProjectDisplay,
+  bindSwitchProject,
+} from "./elements/projects";
+import openSideMenu from "./elements/openSideMenu";
 
 const displayControl = (() => {
   const projectList = document.querySelector("#project-list");
@@ -21,52 +27,21 @@ const displayControl = (() => {
   let projCol;
   const allProjects = [];
 
-  function bindEvents() {
-    document
-      .querySelector("#open-menu")
-      .addEventListener("click", openSideMenu);
-    document
-      .querySelector("#add-project-wrapper")
-      .addEventListener("click", toggleNewProjectDisplay.bind(null, makeNewProject));
-    document
-      .querySelector("#add-to-do")
-      .addEventListener("click", displayCreateModal.bind(null, makeToDo));
+  async function deleteToDo(doc) {
+    await deleteDoc(doc.ref);
+    window.location.reload();
   }
 
-  function render() {
-    projCol = collection(db, "projects");
-    renderProjects();
-  }
-
-  function renderProjects() {
-    getDocs(projCol).then((snapshot) => {
-      snapshot.docs.forEach((doc) => {
-        if (allProjects.indexOf(doc.id) !== -1) {
-          return;
-        }
-        allProjects.push(doc.id);
-        const { name } = doc.data();
-        const newProject = createElementWithProps(
-          "li",
-          "project-list",
-          doc.id,
-          name
-        );
-        projectList.appendChild(newProject);
-        bindSwitchProject(getToDos, projectList);
-        if (currentProjectId === null) {
-          projectList.children[projectList.children.length - 1].click();
-        }
-      });
+  async function editToDo(e, selectedToDo) {
+    e.preventDefault();
+    await updateDoc(selectedToDo.ref, {
+      title: e.target[0].value,
+      description: e.target[1].value,
+      dueDate: e.target[2].value,
+      priority: e.target[3].value,
+      notes: e.target[4].value,
     });
-  }
-
-  function getToDos(e) {
-    currentProjectId = e.target.id;
-    toDoListHtml.innerHTML = "";
-    toDoHeading.textContent = e.target.textContent;
-    const toDos = collection(db, "projects", e.target.id, "toDos");
-    renderToDos(toDos);
+    window.location.reload();
   }
 
   function renderToDos(toDos) {
@@ -113,21 +88,40 @@ const displayControl = (() => {
     });
   }
 
-  async function deleteToDo(doc) {
-    await deleteDoc(doc.ref);
-    window.location.reload();
+  function getToDos(e) {
+    currentProjectId = e.target.id;
+    toDoListHtml.innerHTML = "";
+    toDoHeading.textContent = e.target.textContent;
+    const toDos = collection(db, "projects", e.target.id, "toDos");
+    renderToDos(toDos);
   }
 
-  async function editToDo(e, selectedToDo) {
-    e.preventDefault();
-    await updateDoc(selectedToDo.ref, {
-      title: e.target[0].value,
-      description: e.target[1].value,
-      dueDate: e.target[2].value,
-      priority: e.target[3].value,
-      notes: e.target[4].value,
+  function renderProjects() {
+    getDocs(projCol).then((snapshot) => {
+      snapshot.docs.forEach((doc) => {
+        if (allProjects.indexOf(doc.id) !== -1) {
+          return;
+        }
+        allProjects.push(doc.id);
+        const { name } = doc.data();
+        const newProject = createElementWithProps(
+          "li",
+          "project-list",
+          doc.id,
+          name
+        );
+        projectList.appendChild(newProject);
+        bindSwitchProject(getToDos, projectList);
+        if (currentProjectId === null) {
+          projectList.children[projectList.children.length - 1].click();
+        }
+      });
     });
-    window.location.reload();
+  }
+
+  function render() {
+    projCol = collection(db, "projects");
+    renderProjects();
   }
 
   async function makeNewProject(e) {
@@ -150,6 +144,21 @@ const displayControl = (() => {
     window.location.reload();
   }
 
+  function bindEvents() {
+    document
+      .querySelector("#open-menu")
+      .addEventListener("click", openSideMenu);
+    document
+      .querySelector("#add-project-wrapper")
+      .addEventListener(
+        "click",
+        toggleNewProjectDisplay.bind(null, makeNewProject)
+      );
+    document
+      .querySelector("#add-to-do")
+      .addEventListener("click", displayCreateModal.bind(null, makeToDo));
+  }
+
   window.onload = () => {
     bindEvents();
   };
@@ -158,5 +167,3 @@ const displayControl = (() => {
 })();
 
 displayControl.render();
-
-export { displayControl };
