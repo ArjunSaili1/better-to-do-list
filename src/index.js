@@ -3,6 +3,8 @@ import db from "./firebase";
 import displayCreateModal from "./elements/createToDoModal";
 import { createElementWithProps, addChildren } from "./utils/domHelpers";
 import { createIcons, createDescriptionNotesSection } from "./elements/toDoSections";
+import {toggleNewProjectDisplay, bindSwitchProject} from "./elements/projects";
+import openSideMenu from "./elements/openSideMenu";
 import {
   getDocs,
   collection,
@@ -25,19 +27,10 @@ const displayControl = (() => {
       .addEventListener("click", openSideMenu);
     document
       .querySelector("#add-project-wrapper")
-      .addEventListener("click", toggleNewProjectDisplay);
+      .addEventListener("click", toggleNewProjectDisplay.bind(null, makeNewProject));
     document
       .querySelector("#add-to-do")
       .addEventListener("click", displayCreateModal.bind(null, makeToDo));
-  }
-
-  function bindSwitchProject() {
-    const childArray = [...projectList.children];
-    childArray.forEach((project) => {
-      if (project.tagName === "LI") {
-        project.addEventListener("click", getToDos);
-      }
-    });
   }
 
   function render() {
@@ -60,7 +53,7 @@ const displayControl = (() => {
           name
         );
         projectList.appendChild(newProject);
-        bindSwitchProject();
+        bindSwitchProject(getToDos, projectList);
         if (currentProjectId === null) {
           projectList.children[projectList.children.length - 1].click();
         }
@@ -137,39 +130,12 @@ const displayControl = (() => {
     window.location.reload();
   }
 
-  function toggleNewProjectDisplay() {
-    const inputCtn = document.querySelector("#add-project-input-container");
-    inputCtn.style.display = "flex";
-    document
-      .querySelector("#confirm-project-add")
-      .addEventListener("click", makeNewProject);
-    document
-      .querySelector("#cancel-project-add")
-      .addEventListener("click", cancelNewProject);
-  }
-
-  function cancelNewProject(e) {
-    e.target.parentNode.style.display = "none";
-    document
-      .querySelector("#cancel-project-add")
-      .removeEventListener("click", cancelNewProject);
-  }
-
   async function makeNewProject(e) {
     e.preventDefault();
     await addDoc(collection(db, "projects"), {
       name: e.target.parentNode.children[0].value,
     });
     window.location.reload();
-  }
-
-  function openSideMenu() {
-    const menuOverlay = document.querySelector(".menu-screen-overlay");
-    const overlay = document.querySelector("#overlay");
-    menuOverlay.classList.toggle("open-menu");
-    overlay.addEventListener("click", () => {
-      menuOverlay.classList.remove("open-menu");
-    });
   }
 
   async function makeToDo(e) {
@@ -186,10 +152,11 @@ const displayControl = (() => {
 
   window.onload = () => {
     bindEvents();
-    render();
   };
 
   return { render };
 })();
+
+displayControl.render();
 
 export { displayControl };
